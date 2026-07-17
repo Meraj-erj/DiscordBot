@@ -79,3 +79,26 @@
 2026-07-18 03:11:17 [INFO] Loaded 2 event(s).
 2026-07-18 03:11:17 [INFO] Connecting to Discord
 2026-07-18 03:11:28 [ERROR] Startup failed Connect Timeout Error (attempted address: discord.com:443, timeout: 10000ms)
+2026-07-18 03:11:48 [INFO] Loading commands
+2026-07-18 03:11:48 [INFO] Loaded command: ping
+2026-07-18 03:11:48 [INFO] Loaded 1 command(s).
+2026-07-18 03:11:48 [INFO] Loading events
+2026-07-18 03:11:48 [INFO] Loaded event: interactionCreate
+2026-07-18 03:11:48 [INFO] Loaded event: clientReady
+2026-07-18 03:11:48 [INFO] Loaded 2 event(s).
+2026-07-18 03:11:48 [INFO] Connecting to Discord
+2026-07-18 03:11:50 [INFO] Bot is online
+2026-07-18 03:11:50 [INFO] Logger INFO works.
+2026-07-18 03:11:50 [WARN] Logger WARN works.
+2026-07-18 03:11:50 [ERROR] Logger ERROR works.
+2026-07-18 03:11:50 [DEBUG] Logger DEBUG works.
+2026-07-18 03:11:50 [INFO] Shard 0 ready
+2026-07-18 03:11:50 [INFO] ============================================================
+2026-07-18 03:11:50 [INFO] Discord Bot
+2026-07-18 03:11:50 [INFO] ============================================================
+2026-07-18 03:11:50 [INFO] Bot         : mary#0992
+2026-07-18 03:11:50 [INFO] Bot ID      : 1527412474960281640
+2026-07-18 03:11:50 [INFO] Guilds      : 1
+2026-07-18 03:11:50 [INFO] Node.js     : v24.18.0
+2026-07-18 03:11:50 [INFO] Environment : development
+2026-07-18 03:11:50 [INFO] ============================================================
