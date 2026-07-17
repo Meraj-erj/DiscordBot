@@ -1,28 +1,11 @@
 import { Client, GatewayIntentBits } from "discord.js";
-import dotenv from "dotenv";
 
 import { loadCommands } from "./handlers/commandHandler.js";
 import { loadEvents } from "./handlers/eventHandler.js";
+import { config, validateConfig } from "./config/config.js";
+import logger from "./logger/logger.js";
 
-dotenv.config();
-
-const TOKEN = process.env.DISCORD_TOKEN;
-
-if (!TOKEN) {
-    console.error("❌ DISCORD_TOKEN is missing");
-    process.exit(1);
-}
-
-process.on("unhandledRejection", (error) => {
-    console.error("❌ Unhandled Promise Rejection:");
-    console.error(error);
-});
-
-process.on("uncaughtException", (error) => {
-    console.error("❌ Uncaught Exception:");
-    console.error(error);
-});
-
+validateConfig();
 
 const client = new Client({
     intents: [
@@ -30,71 +13,50 @@ const client = new Client({
     ],
 });
 
+process.on("unhandledRejection", (error) => {
+    logger.error("Unhandled Promise Rejection", error);
+});
 
-async function startBot() {
+process.on("uncaughtException", (error) => {
+    logger.error("Uncaught Exception", error);
+});
+
+client.on("error", (error) => {
+    logger.error("Discord Client Error", error);
+});
+
+client.on("shardDisconnect", (event, shardId) => {
+    logger.warn(`Shard ${shardId} disconnected (${event.code})`);
+});
+
+client.on("shardReconnecting", (shardId) => {
+    logger.info(`Shard ${shardId} reconnecting`);
+});
+
+client.on("shardReady", (shardId) => {
+    logger.info(`Shard ${shardId} ready`);
+});
+
+async function start() {
     try {
-        console.log("📦 Loading commands...");
+        logger.info("Loading commands");
         await loadCommands();
 
-        console.log("📦 Loading events...");
+        logger.info("Loading events");
         await loadEvents(client);
 
-        console.log("🔑 Connecting to Discord...");
+        logger.info("Connecting to Discord");
+        await client.login(config.token);
 
-        await client.login(TOKEN);
-
-        console.log("🚀 Bot is online");
-
+        logger.info("Bot is online");
+        logger.info("Logger INFO works.");
+        logger.warn("Logger WARN works.");
+        logger.error("Logger ERROR works.");
+        logger.debug("Logger DEBUG works.");
     } catch (error) {
-        console.error("❌ Startup failed:");
-        console.error(error);
-
+        logger.error("Startup failed", error);
         process.exit(1);
     }
 }
 
-
-client.on("error", (error) => {
-    console.error("❌ Discord Client Error:");
-    console.error(error);
-});
-
-
-client.on("shardDisconnect", (event, shardId) => {
-    console.warn(
-        `⚠️ Shard ${shardId} disconnected`,
-        event.code
-    );
-});
-
-
-client.on("shardReconnecting", (shardId) => {
-    console.log(
-        `🔄 Shard ${shardId} reconnecting`
-    );
-});
-
-
-client.on("shardReady", (shardId) => {
-    console.log(
-        `🟢 Shard ${shardId} ready`
-    );
-});
-
-
-async function shutdown(signal: string) {
-    console.log(`🛑 Received ${signal}`);
-
-    await client.destroy();
-
-    console.log("👋 Bot stopped");
-
-    process.exit(0);
-}
-
-
-process.on("SIGINT", () => shutdown("SIGINT"));
-process.on("SIGTERM", () => shutdown("SIGTERM"));
-
-
-startBot();
+start();

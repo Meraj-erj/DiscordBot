@@ -5,6 +5,7 @@ import { pathToFileURL } from "node:url";
 
 import { events } from "../collections/events.js";
 import type { Event } from "../interfaces/Event.js";
+import logger from "../logger/logger.js";
 
 export async function loadEvents(client: Client) {
     const eventsPath = path.join(process.cwd(), "src", "events");
@@ -12,7 +13,9 @@ export async function loadEvents(client: Client) {
     const files = await readdir(eventsPath);
 
     for (const file of files) {
-        if (!file.endsWith(".ts") && !file.endsWith(".js")) continue;
+        if (!file.endsWith(".ts") && !file.endsWith(".js")) {
+            continue;
+        }
 
         const filePath = path.join(eventsPath, file);
 
@@ -28,6 +31,8 @@ export async function loadEvents(client: Client) {
             client.on(event.name, (...args) => event.execute(...args));
         }
 
-        console.log(`✅ Loaded event: ${event.name}`);
+        logger.info(`Loaded event: ${event.name}`);
     }
+
+    logger.info(`Loaded ${events.size} event(s).`);
 }
