@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits } from "discord.js";
-
+import { Retry } from "../utils/Retry.js";
 import { config } from "../config/config.js";
 import logger from "../logger/logger.js";
 
@@ -20,13 +20,27 @@ export class ClientManager {
         return this.client;
     }
 
-    public async login(): Promise<void> {
-        logger.info("Connecting to Discord");
+public async login(): Promise<void> {
 
-        await this.client.login(config.token);
+    await Retry.run(
+        async () => {
 
-        logger.info("Discord connection established");
-    }
+            logger.info("Connecting to Discord...");
+
+            await this.client.login(config.token);
+
+            logger.info("Discord connection established");
+
+        },
+        {
+            retries: Infinity,
+            delay: 5000,
+            factor: 2,
+            maxDelay: 60000,
+        }
+    );
+
+}
 
     public async destroy(): Promise<void> {
         logger.info("Closing Discord connection");

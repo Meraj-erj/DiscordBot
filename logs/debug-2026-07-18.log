@@ -188,3 +188,29 @@
 2026-07-18 14:15:21 [INFO] Environment : development
 2026-07-18 14:15:21 [INFO] ============================================================
 2026-07-18 14:17:08 [INFO] SIGINT received
+2026-07-18 14:24:45 [INFO] Initializing framework
+2026-07-18 14:24:45 [INFO] Loading commands
+2026-07-18 14:24:45 [INFO] Loaded command: ping
+2026-07-18 14:24:45 [INFO] Loaded 1 command(s).
+2026-07-18 14:24:45 [INFO] Loading events
+2026-07-18 14:24:45 [INFO] Loaded event: interactionCreate
+2026-07-18 14:24:45 [INFO] Loaded event: clientReady
+2026-07-18 14:24:45 [INFO] Loaded 2 event(s).
+2026-07-18 14:24:45 [INFO] Attempt 1
+2026-07-18 14:24:45 [INFO] Connecting to Discord...
+2026-07-18 14:24:56 [WARN] Attempt 1 failed
+2026-07-18 14:24:56 [INFO] Retrying in 5000 ms
+2026-07-18 14:25:01 [INFO] Attempt 2
+2026-07-18 14:25:01 [INFO] Connecting to Discord...
+2026-07-18 14:25:04 [INFO] Shard 0 ready
+2026-07-18 14:25:04 [INFO] ============================================================
+2026-07-18 14:25:04 [INFO] Discord Bot
+2026-07-18 14:25:04 [INFO] ============================================================
+2026-07-18 14:25:04 [INFO] Bot         : mary#0992
+2026-07-18 14:25:04 [INFO] Bot ID      : 1527412474960281640
+2026-07-18 14:25:04 [INFO] Guilds      : 1
+2026-07-18 14:25:04 [INFO] Node.js     : v24.18.0
+2026-07-18 14:25:04 [INFO] Environment : development
+2026-07-18 14:25:04 [INFO] ============================================================
+2026-07-18 14:25:04 [INFO] Discord connection established
+2026-07-18 14:25:04 [INFO] Framework started
