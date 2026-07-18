@@ -1,96 +1,188 @@
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
 
-const logFormat = winston.format.printf((info) => {
 
-    const timestamp = info.timestamp;
+const logFormat = winston.format.printf(
+    (info) => {
 
-    const level = info.level.toUpperCase();
 
-    const message = info.message;
+        const timestamp =
+            info.timestamp;
 
-    const context = info.context ?? "App";
 
-    return `${timestamp} [${level}] [${context}] ${message}`;
+        const level =
+            info.level.toUpperCase();
 
-});
 
-const logger = winston.createLogger({
+        const context =
+            info.context ?? "App";
 
-    level: "debug",
 
-    format: winston.format.combine(
+        const message =
+            info.message;
 
-        winston.format.timestamp({
 
-            format: "YYYY-MM-DD HH:mm:ss",
+        return `${timestamp} [${level}] [${context}] ${message}`;
 
-        }),
+    }
+);
 
-        logFormat,
 
-    ),
 
-    transports: [
+const logger =
+    winston.createLogger({
 
-        new winston.transports.Console(),
 
-        new DailyRotateFile({
+        level: "debug",
 
-            dirname: "logs",
 
-            filename: "%DATE%.log",
+        format:
+            winston.format.combine(
 
-            datePattern: "YYYY-MM-DD",
+                winston.format.timestamp({
 
-            maxFiles: "30d",
+                    format:
+                    "YYYY-MM-DD HH:mm:ss"
 
-        }),
+                }),
 
-    ],
 
-});
+                logFormat
+
+            ),
+
+
+
+        transports: [
+
+
+            new winston.transports.Console(),
+
+
+
+            new DailyRotateFile({
+
+
+                dirname: "logs",
+
+
+                filename:
+                    "%DATE%.log",
+
+
+                datePattern:
+                    "YYYY-MM-DD",
+
+
+                maxFiles:
+                    "30d"
+
+
+            })
+
+
+        ]
+
+
+    });
+
+
+
+
 
 class Logger {
 
-    public info(context: string, message: string): void {
 
-        logger.info(message, { context });
+    public info(
+        context: string,
+        message: string
+    ): void {
+
+
+        logger.info(
+
+            message,
+
+            {
+                context
+            }
+
+        );
+
 
     }
 
-    public warn(context: string, message: string): void {
 
-        logger.warn(message, { context });
+
+
+    public warn(
+        context: string,
+        message: string
+    ): void {
+
+
+        logger.warn(
+
+            message,
+
+            {
+                context
+            }
+
+        );
+
 
     }
+
+
+
+
 
     public error(
         context: string,
-        message: string,
-        error?: unknown
+        message: string
     ): void {
 
-        logger.error(message, {
 
-            context,
+        logger.error(
 
-            error,
+            message,
 
-        });
+            {
+                context
+            }
+
+        );
+
+
+    }
+
+
+
+
+
+    public debug(
+        context: string,
+        message: string
+    ): void {
+
+
+        logger.debug(
+
+            message,
+
+            {
+                context
+            }
+
+        );
+
 
     }
 
-    public debug(context: string, message: string): void {
-
-        logger.debug(message, {
-
-            context,
-
-        });
-
-    }
 
 }
+
+
 
 export default new Logger();

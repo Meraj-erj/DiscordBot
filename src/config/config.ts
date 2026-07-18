@@ -1,3 +1,4 @@
+import { ConfigurationError } from "../errors/index.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -17,7 +18,7 @@ export function validateConfig() {
     if (!config.guildId) missing.push("GUILD_ID");
 
     if (missing.length > 0) {
-        throw new Error(
+        throw new ConfigurationError(
             `Missing environment variables: ${missing.join(", ")}`
         );
     }

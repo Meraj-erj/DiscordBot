@@ -1,3 +1,5 @@
+import { ContainerError } from "../errors/index.js";
+
 type Factory<T> = () => T;
 
 interface Registration<T> {
@@ -24,7 +26,9 @@ export class Container {
         const registration = this.services.get(token);
 
         if (!registration) {
-            throw new Error(`Service '${token}' is not registered.`);
+            throw new ContainerError(
+                `Service '${token}' is not registered.`
+            );
         }
 
         if (registration.singleton) {

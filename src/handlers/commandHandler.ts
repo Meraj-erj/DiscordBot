@@ -1,3 +1,5 @@
+import { CommandValidator } from "../validators/index.js";
+
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -26,7 +28,13 @@ export async function loadCommands() {
             pathToFileURL(filePath).href
         );
 
-        const command: Command = module.default;
+        const command = module.default;
+
+        CommandValidator.validate(
+            command,
+
+            filePath
+        );
 
         commands.set(command.data.name, command);
 
