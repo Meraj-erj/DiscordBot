@@ -14,4 +14,38 @@ export class Container {
 
     }
 
+    public resolve<T>(name: string): T {
+
+        const service = this.services.get(name);
+
+        if (!service) {
+
+            throw new Error(
+                `Service "${name}" is not registered.`
+            );
+
+        }
+
+        return service as T;
+
+    }
+
+    public has(name: string): boolean {
+
+        return this.services.has(name);
+
+    }
+
+    public remove(name: string): boolean {
+
+        return this.services.delete(name);
+
+    }
+
+    public clear(): void {
+
+        this.services.clear();
+
+    }
+
 }

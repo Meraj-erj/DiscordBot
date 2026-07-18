@@ -1,3 +1,5 @@
+import { ServiceTokens } from "../container/index.js";
+import { container } from "../container/index.js";
 import { loadCommands } from "../handlers/commandHandler.js";
 import { loadEvents } from "../handlers/eventHandler.js";
 import { validateConfig } from "../config/config.js";
@@ -15,6 +17,21 @@ export class Bootstrap {
         logger.info("Bootstrap", "Initializing framework");
 
         validateConfig();
+
+        container.register(
+            ServiceTokens.Logger,
+            logger
+        );
+
+        container.register(
+            ServiceTokens.Client,
+            this.clientManager.getClient()
+        );
+
+        container.register(
+            ServiceTokens.ClientManager,
+            this.clientManager
+        );
 
         logger.info("Bootstrap", "Loading commands");
         await loadCommands();
