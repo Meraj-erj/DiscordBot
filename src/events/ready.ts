@@ -9,15 +9,15 @@ const event: Event = {
     once: true,
 
     async execute(client) {
-        logger.info("============================================================");
-        logger.info("Discord Bot");
-        logger.info("============================================================");
-        logger.info(`Bot         : ${client.user.tag}`);
-        logger.info(`Bot ID      : ${client.user.id}`);
-        logger.info(`Guilds      : ${client.guilds.cache.size}`);
-        logger.info(`Node.js     : ${process.version}`);
-        logger.info(`Environment : ${config.environment}`);
-        logger.info("============================================================");
+        logger.info("Ready","============================================================");
+        logger.info("Ready","Discord Bot");
+        logger.info("Ready","============================================================");
+        logger.info("Ready",`Bot         : ${client.user.tag}`);
+        logger.info("Ready",`Bot ID      : ${client.user.id}`);
+        logger.info("Ready",`Guilds      : ${client.guilds.cache.size}`);
+        logger.info("Ready",`Node.js     : ${process.version}`);
+        logger.info("Ready",`Environment : ${config.environment}`);
+        logger.info("Ready","============================================================");
     },
 };
 

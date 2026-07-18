@@ -12,26 +12,28 @@ export class Bootstrap {
     }
 
     public async initialize(): Promise<void> {
-        logger.info("Initializing framework");
+        logger.info("Bootstrap", "Initializing framework");
 
         validateConfig();
 
-        logger.info("Loading commands");
+        logger.info("Bootstrap", "Loading commands");
         await loadCommands();
 
-        logger.info("Loading events");
+        logger.info("Bootstrap", "Loading events");
         await loadEvents(this.clientManager.getClient());
 
         await this.clientManager.login();
 
-        logger.info("Framework started");
+        logger.info("Bootstrap", "Framework started");
+
     }
 
     public async shutdown(): Promise<void> {
-        logger.info("Shutting down framework");
+        logger.info("Bootstrap", "Shutting down framework");
+
 
         await this.clientManager.destroy();
 
-        logger.info("Framework stopped");
+        logger.info("Bootstrap", "Framework stopped");
     }
 }

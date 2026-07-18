@@ -31,8 +31,14 @@ export async function loadEvents(client: Client) {
             client.on(event.name, (...args) => event.execute(...args));
         }
 
-        logger.info(`Loaded event: ${event.name}`);
+        logger.info(
+    "EventHandler",
+    `Loaded event: ${event.name}`
+);
     }
 
-    logger.info(`Loaded ${events.size} event(s).`);
+    logger.info(
+    "EventHandler",
+    `Loaded ${events.size} event(s).`
+);
 }

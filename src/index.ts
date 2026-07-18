@@ -9,14 +9,21 @@ async function main() {
     try {
         await app.start();
     } catch (error) {
-        logger.error("Application startup failed", error);
+        logger.error(
+    "Application",
+    "Application startup failed",
+    error
+);
         process.exit(1);
     }
 }
 
 
 process.on("SIGINT", async () => {
-    logger.info("SIGINT received");
+    logger.info(
+    "Process",
+    "SIGINT received"
+);
 
     await app.shutdown();
 
@@ -25,7 +32,10 @@ process.on("SIGINT", async () => {
 
 
 process.on("SIGTERM", async () => {
-    logger.info("SIGTERM received");
+    logger.info(
+    "Process",
+    "SIGTERM received"
+);
 
     await app.shutdown();
 

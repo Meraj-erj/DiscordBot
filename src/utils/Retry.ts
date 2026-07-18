@@ -26,19 +26,28 @@ export class Retry {
 
             try {
 
-                logger.info(`Attempt ${attempt}`);
+                logger.info(
+                    "Retry",
+                    `Attempt ${attempt}`
+                );
 
                 return await task();
 
             } catch (error) {
 
-                logger.warn(`Attempt ${attempt} failed`);
+                logger.warn(
+                    "Retry",
+                    `Attempt ${attempt} failed`
+                );
 
                 if (attempt >= retries) {
                     throw error;
                 }
 
-                logger.info(`Retrying in ${delay} ms`);
+                logger.info(
+                    "Retry",
+                    `Retrying in ${delay} ms`
+                );
 
                 await this.sleep(delay);
 

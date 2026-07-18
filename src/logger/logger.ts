@@ -1,64 +1,96 @@
-import fs from "node:fs";
-import path from "node:path";
-
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
 
-const logsDir = path.join(process.cwd(), "logs");
+const logFormat = winston.format.printf((info) => {
 
-if (!fs.existsSync(logsDir)) {
-    fs.mkdirSync(logsDir, { recursive: true });
-}
+    const timestamp = info.timestamp;
 
-const logFormat = winston.format.combine(
-    winston.format.timestamp({
-        format: "YYYY-MM-DD HH:mm:ss",
-    }),
-    winston.format.printf(({ timestamp, level, message }) => {
-        return `${timestamp} [${level.toUpperCase()}] ${message}`;
-    })
-);
+    const level = info.level.toUpperCase();
 
-const logger = winston.createLogger({
-    level: "debug",
+    const message = info.message;
 
-    format: logFormat,
+    const context = info.context ?? "App";
 
-    transports: [
-        new winston.transports.Console({
-            format: winston.format.combine(
-                winston.format.colorize({
-                    all: true,
-                }),
-                winston.format.timestamp({
-                    format: "YYYY-MM-DD HH:mm:ss",
-                }),
-                winston.format.printf(({ timestamp, level, message }) => {
-                    return `${timestamp} [${level}] ${message}`;
-                })
-            ),
-        }),
+    return `${timestamp} [${level}] [${context}] ${message}`;
 
-        new DailyRotateFile({
-            filename: "logs/app-%DATE%.log",
-            datePattern: "YYYY-MM-DD",
-            maxFiles: "30d",
-        }),
-
-        new DailyRotateFile({
-            filename: "logs/error-%DATE%.log",
-            level: "error",
-            datePattern: "YYYY-MM-DD",
-            maxFiles: "30d",
-        }),
-
-        new DailyRotateFile({
-            filename: "logs/debug-%DATE%.log",
-            level: "debug",
-            datePattern: "YYYY-MM-DD",
-            maxFiles: "7d",
-        }),
-    ],
 });
 
-export default logger;
+const logger = winston.createLogger({
+
+    level: "debug",
+
+    format: winston.format.combine(
+
+        winston.format.timestamp({
+
+            format: "YYYY-MM-DD HH:mm:ss",
+
+        }),
+
+        logFormat,
+
+    ),
+
+    transports: [
+
+        new winston.transports.Console(),
+
+        new DailyRotateFile({
+
+            dirname: "logs",
+
+            filename: "%DATE%.log",
+
+            datePattern: "YYYY-MM-DD",
+
+            maxFiles: "30d",
+
+        }),
+
+    ],
+
+});
+
+class Logger {
+
+    public info(context: string, message: string): void {
+
+        logger.info(message, { context });
+
+    }
+
+    public warn(context: string, message: string): void {
+
+        logger.warn(message, { context });
+
+    }
+
+    public error(
+        context: string,
+        message: string,
+        error?: unknown
+    ): void {
+
+        logger.error(message, {
+
+            context,
+
+            error,
+
+        });
+
+    }
+
+    public debug(context: string, message: string): void {
+
+        logger.debug(message, {
+
+            context,
+
+        });
+
+    }
+
+}
+
+export default new Logger();

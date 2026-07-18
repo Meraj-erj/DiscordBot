@@ -25,11 +25,17 @@ public async login(): Promise<void> {
     await Retry.run(
         async () => {
 
-            logger.info("Connecting to Discord...");
+            logger.info(
+                "ClientManager",
+                "Connecting to Discord..."
+            );
 
             await this.client.login(config.token);
 
-            logger.info("Discord connection established");
+            logger.info(
+                "ClientManager",
+                "Discord connection established"
+            );
 
         },
         {
@@ -43,29 +49,47 @@ public async login(): Promise<void> {
 }
 
     public async destroy(): Promise<void> {
-        logger.info("Closing Discord connection");
+        logger.info(
+            "ClientManager",
+            "Closing Discord connection"
+        );
 
         this.client.destroy();
 
-        logger.info("Discord client destroyed");
+        logger.info(
+            "ClientManager",
+            "Discord client destroyed"
+        );
     }
 
     private registerEvents(): void {
 
         this.client.on("error", (error) => {
-            logger.error("Discord Client Error", error);
+            logger.error(
+                "ClientManager",
+                "Discord Client Error", error
+            );
         });
 
         this.client.on("shardReady", (id) => {
-            logger.info(`Shard ${id} ready`);
+            logger.info(
+                "ClientManager",
+                `Shard ${id} ready`
+            );
         });
 
         this.client.on("shardDisconnect", (event, id) => {
-            logger.warn(`Shard ${id} disconnected (${event.code})`);
+            logger.warn(
+                "ClientManager",
+                `Shard ${id} disconnected (${event.code})`
+            );
         });
 
         this.client.on("shardReconnecting", (id) => {
-            logger.info(`Shard ${id} reconnecting`);
+            logger.info(
+                "ClientManager",
+                `Shard ${id} reconnecting`
+            );
         });
 
     }

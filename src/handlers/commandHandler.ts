@@ -30,8 +30,14 @@ export async function loadCommands() {
 
         commands.set(command.data.name, command);
 
-        logger.info(`Loaded command: ${command.data.name}`);
+        logger.info(
+    "CommandHandler",
+    `Loaded command: ${command.data.name}`
+);
     }
 
-    logger.info(`Loaded ${commands.size} command(s).`);
+    logger.info(
+    "CommandHandler",
+    `Loaded ${commands.size} command(s).`
+);
 }
