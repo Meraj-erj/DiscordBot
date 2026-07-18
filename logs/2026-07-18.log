@@ -154,3 +154,29 @@ undefined [INFO] [App] Shard 0 reconnecting
 2026-07-18 16:48:07 [INFO] [Ready] Environment : development
 2026-07-18 16:48:07 [INFO] [Ready] ============================================================
 2026-07-18 16:57:27 [INFO] [Process] SIGINT received
+2026-07-18 19:55:28 [INFO] [Bootstrap] Initializing framework
+2026-07-18 19:55:28 [INFO] [Bootstrap] Loading commands
+2026-07-18 19:55:28 [INFO] [CommandHandler] Loaded command: ping
+2026-07-18 19:55:28 [INFO] [CommandHandler] Loaded 1 command(s).
+2026-07-18 19:55:28 [INFO] [Bootstrap] Loading events
+2026-07-18 19:55:28 [INFO] [EventHandler] Loaded event: interactionCreate
+2026-07-18 19:55:28 [INFO] [EventHandler] Loaded event: clientReady
+2026-07-18 19:55:28 [INFO] [EventHandler] Loaded 2 event(s).
+2026-07-18 19:55:28 [INFO] [Retry] Attempt 1
+2026-07-18 19:55:28 [INFO] [ClientManager] Connecting to Discord...
+2026-07-18 19:55:39 [WARN] [Retry] Attempt 1 failed
+2026-07-18 19:55:39 [INFO] [Retry] Retrying in 5000 ms
+2026-07-18 19:55:44 [INFO] [Retry] Attempt 2
+2026-07-18 19:55:44 [INFO] [ClientManager] Connecting to Discord...
+2026-07-18 19:55:58 [INFO] [ClientManager] Discord connection established
+2026-07-18 19:55:58 [INFO] [Bootstrap] Framework started
+2026-07-18 19:55:58 [INFO] [ClientManager] Shard 0 ready
+2026-07-18 19:55:58 [INFO] [Ready] ============================================================
+2026-07-18 19:55:58 [INFO] [Ready] Discord Bot
+2026-07-18 19:55:58 [INFO] [Ready] ============================================================
+2026-07-18 19:55:58 [INFO] [Ready] Bot         : mary#0992
+2026-07-18 19:55:58 [INFO] [Ready] Bot ID      : 1527412474960281640
+2026-07-18 19:55:58 [INFO] [Ready] Guilds      : 1
+2026-07-18 19:55:58 [INFO] [Ready] Node.js     : v24.18.0
+2026-07-18 19:55:58 [INFO] [Ready] Environment : development
+2026-07-18 19:55:58 [INFO] [Ready] ============================================================

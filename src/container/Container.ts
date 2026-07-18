@@ -1,51 +1,56 @@
+type Factory<T> = () => T;
+
+interface Registration<T> {
+    factory: Factory<T>;
+    singleton: boolean;
+    instance?: T;
+}
+
 export class Container {
+    private readonly services = new Map<string, Registration<any>>();
 
-    private readonly services = new Map<string, unknown>();
+    public register<T>(
+        token: string,
+        factory: Factory<T>,
+        singleton = true
+    ): void {
+        this.services.set(token, {
+            factory,
+            singleton,
+        });
+    }
 
-    public register<T>(name: string, instance: T): void {
+    public resolve<T>(token: string): T {
+        const registration = this.services.get(token);
 
-        if (this.services.has(name)) {
-            throw new Error(
-                `Service "${name}" is already registered.`
-            );
+        if (!registration) {
+            throw new Error(`Service '${token}' is not registered.`);
         }
 
-        this.services.set(name, instance);
+        if (registration.singleton) {
+            if (!registration.instance) {
+                registration.instance = registration.factory();
+            }
 
-    }
-
-    public resolve<T>(name: string): T {
-
-        const service = this.services.get(name);
-
-        if (!service) {
-
-            throw new Error(
-                `Service "${name}" is not registered.`
-            );
-
+            return registration.instance;
         }
 
-        return service as T;
-
+        return registration.factory();
     }
 
-    public has(name: string): boolean {
-
-        return this.services.has(name);
-
+    public has(token: string): boolean {
+        return this.services.has(token);
     }
 
-    public remove(name: string): boolean {
-
-        return this.services.delete(name);
-
+    public remove(token: string): void {
+        this.services.delete(token);
     }
 
     public clear(): void {
-
         this.services.clear();
-
     }
 
+    public get size(): number {
+        return this.services.size;
+    }
 }

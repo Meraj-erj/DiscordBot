@@ -20,17 +20,17 @@ export class Bootstrap {
 
         container.register(
             ServiceTokens.Logger,
-            logger
+            () => logger
         );
 
         container.register(
             ServiceTokens.Client,
-            this.clientManager.getClient()
+            () => this.clientManager.getClient()
         );
 
         container.register(
             ServiceTokens.ClientManager,
-            this.clientManager
+            () => this.clientManager
         );
 
         logger.info("Bootstrap", "Loading commands");
