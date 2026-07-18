@@ -1,62 +1,36 @@
-import { Client, GatewayIntentBits } from "discord.js";
-
-import { loadCommands } from "./handlers/commandHandler.js";
-import { loadEvents } from "./handlers/eventHandler.js";
-import { config, validateConfig } from "./config/config.js";
+import { Application } from "./core/Application.js";
 import logger from "./logger/logger.js";
 
-validateConfig();
 
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-    ],
-});
+const app = new Application();
 
-process.on("unhandledRejection", (error) => {
-    logger.error("Unhandled Promise Rejection", error);
-});
 
-process.on("uncaughtException", (error) => {
-    logger.error("Uncaught Exception", error);
-});
-
-client.on("error", (error) => {
-    logger.error("Discord Client Error", error);
-});
-
-client.on("shardDisconnect", (event, shardId) => {
-    logger.warn(`Shard ${shardId} disconnected (${event.code})`);
-});
-
-client.on("shardReconnecting", (shardId) => {
-    logger.info(`Shard ${shardId} reconnecting`);
-});
-
-client.on("shardReady", (shardId) => {
-    logger.info(`Shard ${shardId} ready`);
-});
-
-async function start() {
+async function main() {
     try {
-        logger.info("Loading commands");
-        await loadCommands();
-
-        logger.info("Loading events");
-        await loadEvents(client);
-
-        logger.info("Connecting to Discord");
-        await client.login(config.token);
-
-        logger.info("Bot is online");
-        logger.info("Logger INFO works.");
-        logger.warn("Logger WARN works.");
-        logger.error("Logger ERROR works.");
-        logger.debug("Logger DEBUG works.");
+        await app.start();
     } catch (error) {
-        logger.error("Startup failed", error);
+        logger.error("Application startup failed", error);
         process.exit(1);
     }
 }
 
-start();
+
+process.on("SIGINT", async () => {
+    logger.info("SIGINT received");
+
+    await app.shutdown();
+
+    process.exit(0);
+});
+
+
+process.on("SIGTERM", async () => {
+    logger.info("SIGTERM received");
+
+    await app.shutdown();
+
+    process.exit(0);
+});
+
+
+main();
