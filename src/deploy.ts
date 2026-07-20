@@ -5,16 +5,84 @@ import { deployCommands } from "./handlers/deployCommands.js";
 
 dotenv.config();
 
-async function main() {
+async function delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function runWithRetry(
+    task: () => Promise<void>,
+    retries = 5,
+    delayTime = 5000
+): Promise<void> {
+
+    for (let attempt = 1; attempt <= retries; attempt++) {
+
+        try {
+
+            console.log(
+                `🔄 Attempt ${attempt}/${retries}`
+            );
+
+            await task();
+
+            return;
+
+        } catch (error) {
+
+            console.error(
+                `❌ Attempt ${attempt} failed`
+            );
+
+            if (attempt === retries) {
+                throw error;
+            }
+
+            console.log(
+                `⏳ Retrying in ${delayTime / 1000}s...`
+            );
+
+            await delay(delayTime);
+        }
+    }
+}
+
+
+async function main(): Promise<void> {
+
     console.log("📦 Loading commands...");
 
     await loadCommands();
 
+
     console.log("🚀 Deploying commands...");
 
-    await deployCommands();
 
-    console.log("🎉 Deploy completed successfully!");
+    await runWithRetry(
+        async () => {
+
+            await deployCommands();
+
+        },
+        5,
+        5000
+    );
+
+
+    console.log(
+        "🎉 Deploy completed successfully!"
+    );
 }
 
-main().catch(console.error);
+
+main()
+    .catch(error => {
+
+        console.error(
+            "❌ Deploy failed permanently:"
+        );
+
+        console.error(error);
+
+        process.exit(1);
+
+    });
