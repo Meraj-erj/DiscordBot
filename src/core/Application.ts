@@ -1,4 +1,4 @@
-import { Bootstrap } from "./Bootstrap.js";
+import { Bootstrap } from "./bootstrap.js";
 
 export class Application {
     private readonly bootstrap: Bootstrap;

@@ -51,17 +51,16 @@ const command: Command = {
         switch (subcommand) {
 
             case "basic":
-
-                return basicHandler(interaction);
+                await basicHandler(interaction);
+                return;
 
             case "full":
-
-                return fullHandler(interaction);
+                await fullHandler(interaction);
+                return;
 
             case "debug":
-
-                return debugHandler(interaction);
-
+                await debugHandler(interaction);
+                return;
         }
 
     }
