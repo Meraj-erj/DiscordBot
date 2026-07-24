@@ -3,19 +3,27 @@
     "rootDir": "./src",
     "outDir": "./dist",
 
+    "target": "ES2022",
+    "lib": ["ES2022"],
+
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "target": "ES2022",
 
-    "lib": ["ES2022"],
     "types": ["node"],
 
     "strict": true,
+
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
 
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
 
     "sourceMap": true,
+
+    "declaration": true,
+    "declarationMap": true,
 
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -24,7 +32,11 @@
     "isolatedModules": true,
     "moduleDetection": "force"
   },
-  "include": ["src/**/*"],
+
+  "include": [
+    "src/**/*"
+  ],
+
   "exclude": [
     "node_modules",
     "dist"

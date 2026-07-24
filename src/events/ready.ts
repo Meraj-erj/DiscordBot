@@ -3,12 +3,13 @@ import process from "node:process";
 import type { Event } from "../interfaces/Event.js";
 import logger from "../logger/logger.js";
 import { config } from "../config/config.js";
+import { Client } from "discord.js";
 
 const event: Event = {
     name: "clientReady",
     once: true,
 
-    async execute(client) {
+    async execute(client: Client<true>) {
         logger.info("Ready","============================================================");
         logger.info("Ready","Discord Bot");
         logger.info("Ready","============================================================");

@@ -10,7 +10,7 @@ export class MonitoringService {
 
     private readonly history = new HistoryBuffer();
 
-    private timer?: NodeJS.Timeout;
+    private timer: NodeJS.Timeout | undefined;
 
 
     constructor(

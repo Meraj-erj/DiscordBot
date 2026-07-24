@@ -1,7 +1,32 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+
+# Build
+dist/
+*.tsbuildinfo
+
+# Environment
 .env
-.vscode
-.debug-report.txt
+.env.*
+!.env.example
+
+# Logs
 logs/
 *.log
+
+# Coverage
+coverage/
+
+# IDE
+.vscode/
+!.vscode/extensions.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary / Debug
+source.txt
+debug-report.txt
+print-source.js

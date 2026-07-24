@@ -24,7 +24,7 @@ export async function deployCommands(): Promise<void> {
 
         console.log(
             "Commands:",
-            commands.map(c => c.data.name)
+            Array.from(commands.values()).map(command => command.data.name)
         );
 
 
@@ -34,7 +34,7 @@ export async function deployCommands(): Promise<void> {
                 process.env.GUILD_ID!
             ),
             {
-                body: commands.map(
+                body: Array.from(commands.values()).map(
                     command => command.data.toJSON()
                 ),
             }

@@ -34,7 +34,7 @@ export class HistoryBuffer {
 
         while (
             this.history.length > 0 &&
-            this.history[0].timestamp < cutoff
+            this.history[0]!.timestamp < cutoff
         ) {
             this.history.shift();
         }

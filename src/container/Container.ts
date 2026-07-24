@@ -9,7 +9,7 @@ interface Registration<T> {
 }
 
 export class Container {
-    private readonly services = new Map<string, Registration<any>>();
+    private readonly services = new Map<string, Registration<unknown>>();
 
     public register<T>(
         token: string,
@@ -36,10 +36,10 @@ export class Container {
                 registration.instance = registration.factory();
             }
 
-            return registration.instance;
+            return registration.instance as T;
         }
 
-        return registration.factory();
+        return registration.factory() as T;
     }
 
     public has(token: string): boolean {
