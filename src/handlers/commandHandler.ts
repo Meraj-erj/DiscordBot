@@ -7,65 +7,28 @@ import { pathToFileURL } from "node:url";
 import { commands } from "../collections/commands.js";
 import logger from "../logger/logger.js";
 
-
 export async function loadCommands(): Promise<void> {
+    const commandsPath = path.join(process.cwd(), "src", "commands");
 
-    const commandsPath = path.join(
-        process.cwd(),
-        "src",
-        "commands"
-    );
-
-
-    const files = await readdir(
-        commandsPath
-    );
-
+    const files = await readdir(commandsPath);
 
     for (const file of files) {
-
         if (!file.endsWith(".ts") && !file.endsWith(".js")) {
             continue;
         }
 
+        const filePath = path.join(commandsPath, file);
 
-        const filePath = path.join(
-            commandsPath,
-            file
-        );
-
-
-        const module = await import(
-            pathToFileURL(filePath).href
-        );
-
+        const module = await import(pathToFileURL(filePath).href);
 
         const command = module.default;
 
+        CommandValidator.validate(command, filePath);
 
-        CommandValidator.validate(
-            command,
-            filePath
-        );
+        commands.set(command.data.name, command);
 
-
-        commands.set(
-            command.data.name,
-            command
-        );
-
-
-        logger.info(
-            "CommandHandler",
-            `Loaded command: ${command.data.name}`
-        );
-
+        logger.info("CommandHandler", `Loaded command: ${command.data.name}`);
     }
 
-
-    logger.info(
-        "CommandHandler",
-        `Loaded ${commands.size} command(s).`
-    );
-
+    logger.info("CommandHandler", `Loaded ${commands.size} command(s).`);
 }

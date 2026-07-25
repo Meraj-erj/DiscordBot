@@ -1,7 +1,4 @@
-import {
-    ChatInputCommandInteraction,
-    EmbedBuilder,
-} from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 
 import { monitoring } from "../index.js";
 
@@ -17,9 +14,7 @@ function uptime(seconds: number): string {
     return h > 0 ? `${h}h ${m}m` : `${m}m`;
 }
 
-export async function basicHandler(
-    interaction: ChatInputCommandInteraction
-) {
+export async function basicHandler(interaction: ChatInputCommandInteraction) {
     const snapshot = monitoring.latest();
 
     if (!snapshot) {
@@ -29,15 +24,9 @@ export async function basicHandler(
         });
     }
 
-    const ram =
-        snapshot.system.memory.used /
-        snapshot.system.memory.total *
-        100;
+    const ram = (snapshot.system.memory.used / snapshot.system.memory.total) * 100;
 
-    const disk =
-        snapshot.system.disk.used /
-        snapshot.system.disk.total *
-        100;
+    const disk = (snapshot.system.disk.used / snapshot.system.disk.total) * 100;
 
     const embed = new EmbedBuilder()
 
@@ -45,62 +34,53 @@ export async function basicHandler(
 
         .setAuthor({
             name: "Mary Monitor",
-            iconURL: interaction.client.user?.displayAvatarURL()
+            iconURL: interaction.client.user?.displayAvatarURL(),
         })
 
         .setThumbnail(
             interaction.client.user!.displayAvatarURL({
-                size: 256
+                size: 256,
             })
         )
 
         .addFields(
-
             {
                 name: "💻 Resources",
-                value:
-                    `**CPU**\n${bar(snapshot.system.cpu)} \`${snapshot.system.cpu.toFixed(1)}%\`
+                value: `**CPU**\n${bar(snapshot.system.cpu)} \`${snapshot.system.cpu.toFixed(1)}%\`
 
 **Memory**\n${bar(ram)} \`${ram.toFixed(1)}%\`
 
 **Disk**\n${bar(disk)} \`${disk.toFixed(1)}%\``,
-                inline: true
+                inline: true,
             },
 
             {
                 name: "⚡ Runtime",
-                value:
-                    `⏱ **Up**\n${uptime(snapshot.process.uptime)}
+                value: `⏱ **Up**\n${uptime(snapshot.process.uptime)}
 
 🧠 **RAM**
 ${Math.round(snapshot.process.memory / 1024 / 1024)} MB
 
 🌐 **Ping**
 ${snapshot.discord.ping} ms`,
-                inline: true
+                inline: true,
             },
 
             {
                 name: "📈 CPU History",
-                value:
-                    "`▁▂▃▄▅▆▇▆▅▄▃▂▃▄▅▆`",
-                inline: false
+                value: "`▁▂▃▄▅▆▇▆▅▄▃▂▃▄▅▆`",
+                inline: false,
             }
-
         )
 
         .setFooter({
-            text: "Mary Monitoring Framework"
+            text: "Mary Monitoring Framework",
         })
 
         .setTimestamp();
-
-
 
     await interaction.reply({
         embeds: [embed],
         ephemeral: true,
     });
 }
-
-

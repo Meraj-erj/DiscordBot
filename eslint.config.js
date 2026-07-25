@@ -4,12 +4,7 @@ import eslintConfigPrettier from "eslint-config-prettier";
 
 export default [
     {
-        ignores: [
-            "dist/**",
-            "node_modules/**",
-            "logs/**",
-            "print-source.js"
-        ]
+        ignores: ["dist/**", "node_modules/**", "logs/**", "print-source.js"],
     },
 
     js.configs.recommended,
@@ -23,8 +18,8 @@ export default [
 
         languageOptions: {
             parserOptions: {
-                project: "./tsconfig.json"
-            }
+                project: "./tsconfig.json",
+            },
         },
 
         rules: {
@@ -36,9 +31,9 @@ export default [
                 "warn",
                 {
                     argsIgnorePattern: "^_",
-                    varsIgnorePattern: "^_"
-                }
-            ]
-        }
-    }
+                    varsIgnorePattern: "^_",
+                },
+            ],
+        },
+    },
 ];

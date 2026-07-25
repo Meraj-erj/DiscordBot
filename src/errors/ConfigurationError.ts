@@ -2,17 +2,8 @@ import { FrameworkError } from "./FrameworkError.js";
 import { ErrorCodes } from "./ErrorCodes.js";
 
 export class ConfigurationError extends FrameworkError {
-
-    constructor(
-        message: string,
-        file?: string,
-        line?: number,
-        hint?: string,
-        cause?: Error
-    ) {
-
+    constructor(message: string, file?: string, line?: number, hint?: string, cause?: Error) {
         super({
-
             code: ErrorCodes.CONFIG_INVALID,
 
             message,
@@ -24,9 +15,6 @@ export class ConfigurationError extends FrameworkError {
             hint,
 
             cause,
-
         });
-
     }
-
 }

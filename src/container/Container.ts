@@ -11,11 +11,7 @@ interface Registration<T> {
 export class Container {
     private readonly services = new Map<string, Registration<unknown>>();
 
-    public register<T>(
-        token: string,
-        factory: Factory<T>,
-        singleton = true
-    ): void {
+    public register<T>(token: string, factory: Factory<T>, singleton = true): void {
         this.services.set(token, {
             factory,
             singleton,
@@ -26,9 +22,7 @@ export class Container {
         const registration = this.services.get(token);
 
         if (!registration) {
-            throw new ContainerError(
-                `Service '${token}' is not registered.`
-            );
+            throw new ContainerError(`Service '${token}' is not registered.`);
         }
 
         if (registration.singleton) {

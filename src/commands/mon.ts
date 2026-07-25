@@ -1,7 +1,4 @@
-import {
-    SlashCommandBuilder,
-    ChatInputCommandInteraction
-} from "discord.js";
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 
 import { requireMonitorRole } from "../utils/permissions.js";
 
@@ -12,14 +9,13 @@ import { fullHandler } from "../monitoring/handlers/full.js";
 import { debugHandler } from "../monitoring/handlers/debug.js";
 
 const command: Command = {
-
     data: new SlashCommandBuilder()
 
         .setName("mon")
 
         .setDescription("Monitoring")
 
-        .addSubcommand(sub =>
+        .addSubcommand((sub) =>
             sub
 
                 .setName("basic")
@@ -27,7 +23,7 @@ const command: Command = {
                 .setDescription("Basic monitoring")
         )
 
-        .addSubcommand(sub =>
+        .addSubcommand((sub) =>
             sub
 
                 .setName("full")
@@ -35,7 +31,7 @@ const command: Command = {
                 .setDescription("Full monitoring")
         )
 
-        .addSubcommand(sub =>
+        .addSubcommand((sub) =>
             sub
 
                 .setName("debug")
@@ -43,19 +39,14 @@ const command: Command = {
                 .setDescription("Debug monitoring")
         ),
 
-    async execute(
-        interaction: ChatInputCommandInteraction
-    ) {
-
+    async execute(interaction: ChatInputCommandInteraction) {
         if (!(await requireMonitorRole(interaction))) {
             return;
         }
 
-        const subcommand =
-            interaction.options.getSubcommand();
+        const subcommand = interaction.options.getSubcommand();
 
         switch (subcommand) {
-
             case "basic":
                 await basicHandler(interaction);
                 return;
@@ -68,9 +59,7 @@ const command: Command = {
                 await debugHandler(interaction);
                 return;
         }
-
-    }
-
+    },
 };
 
 export default command;

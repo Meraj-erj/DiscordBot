@@ -1,255 +1,118 @@
-import {
-    Client,
-    GatewayIntentBits
-} from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 
 import logger from "../logger/logger.js";
-import {
-    DiscordConnectionError,
-    ErrorFactory,
-    ErrorFormatter
-} from "../errors/index.js";
+import { DiscordConnectionError, ErrorFactory, ErrorFormatter } from "../errors/index.js";
 
 import { validateConfig } from "../config/config.js";
 
-
 export class ClientManager {
-
     private readonly client: Client;
 
     constructor() {
-
         validateConfig();
 
         this.client = new Client({
-
             intents: [
-
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.MessageContent,
-
             ],
-
         });
 
-
         this.registerEvents();
-
     }
-
 
     public getClient(): Client {
-
         return this.client;
-
     }
 
-
     public async login(): Promise<void> {
-
         const maxAttempts = 5;
 
         let attempt = 1;
 
-
         while (attempt <= maxAttempts) {
-
             try {
+                logger.info("Retry", `Attempt ${attempt}/${maxAttempts}`);
 
-                logger.info(
-                    "Retry",
-                    `Attempt ${attempt}/${maxAttempts}`
-                );
+                logger.info("ClientManager", "Connecting to Discord...");
 
+                await this.client.login(process.env.DISCORD_TOKEN);
 
-                logger.info(
-                    "ClientManager",
-                    "Connecting to Discord..."
-                );
-
-
-                await this.client.login(
-                    process.env.DISCORD_TOKEN
-                );
-
-
-                logger.info(
-                    "ClientManager",
-                    "Discord connection established"
-                );
-
+                logger.info("ClientManager", "Discord connection established");
 
                 return;
-
-
             } catch (error) {
-
-
-                const frameworkError =
-                    ErrorFactory.create(error);
-
+                const frameworkError = ErrorFactory.create(error);
 
                 logger.error(
-
                     "ClientManager",
 
-                    ErrorFormatter.format(
-                        frameworkError
-                    )
-
+                    ErrorFormatter.format(frameworkError)
                 );
 
-
                 if (attempt >= maxAttempts) {
-
                     throw new DiscordConnectionError(
                         "Unable to connect to Discord after maximum retry attempts."
                     );
-
                 }
 
-
-
-                const delay =
-                    Math.min(
-                        5000 * attempt,
-                        60000
-                    );
-
+                const delay = Math.min(5000 * attempt, 60000);
 
                 logger.warn(
-
                     "Retry",
 
                     `Retrying in ${delay} ms`
-
                 );
 
-
-                await new Promise(
-                    resolve =>
-                        setTimeout(
-                            resolve,
-                            delay
-                        )
-                );
-
+                await new Promise((resolve) => setTimeout(resolve, delay));
 
                 attempt++;
-
             }
-
         }
-
     }
 
-
     public async destroy(): Promise<void> {
-
-
-        logger.info(
-            "ClientManager",
-            "Closing Discord connection"
-        );
-
+        logger.info("ClientManager", "Closing Discord connection");
 
         this.client.destroy();
 
-
-        logger.info(
-            "ClientManager",
-            "Discord client destroyed"
-        );
-
+        logger.info("ClientManager", "Discord client destroyed");
     }
-
-
 
     private registerEvents(): void {
+        this.client.on("error", (error) => {
+            const frameworkError = ErrorFactory.create(error);
 
+            logger.error(
+                "DiscordClient",
 
-        this.client.on(
-            "error",
-            (error) => {
+                ErrorFormatter.format(frameworkError)
+            );
+        });
 
+        this.client.on("shardReady", (id) => {
+            logger.info(
+                "ClientManager",
 
-                const frameworkError =
-                    ErrorFactory.create(error);
+                `Shard ${id} ready`
+            );
+        });
 
+        this.client.on("shardDisconnect", (event, id) => {
+            logger.warn(
+                "ClientManager",
 
-                logger.error(
+                `Shard ${id} disconnected (${event.code})`
+            );
+        });
 
-                    "DiscordClient",
+        this.client.on("shardReconnecting", (id) => {
+            logger.info(
+                "ClientManager",
 
-                    ErrorFormatter.format(
-                        frameworkError
-                    )
-
-                );
-
-
-            }
-        );
-
-
-
-        this.client.on(
-            "shardReady",
-            (id) => {
-
-
-                logger.info(
-
-                    "ClientManager",
-
-                    `Shard ${id} ready`
-
-                );
-
-
-            }
-        );
-
-
-
-        this.client.on(
-            "shardDisconnect",
-            (event, id) => {
-
-
-                logger.warn(
-
-                    "ClientManager",
-
-                    `Shard ${id} disconnected (${event.code})`
-
-                );
-
-
-            }
-        );
-
-
-
-        this.client.on(
-            "shardReconnecting",
-            (id) => {
-
-
-                logger.info(
-
-                    "ClientManager",
-
-                    `Shard ${id} reconnecting`
-
-                );
-
-
-            }
-        );
-
-
+                `Shard ${id} reconnecting`
+            );
+        });
     }
-
 }

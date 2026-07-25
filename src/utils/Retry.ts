@@ -8,12 +8,7 @@ export interface RetryOptions {
 }
 
 export class Retry {
-
-    public static async run<T>(
-        task: () => Promise<T>,
-        options: RetryOptions = {}
-    ): Promise<T> {
-
+    public static async run<T>(task: () => Promise<T>, options: RetryOptions = {}): Promise<T> {
         const retries = options.retries ?? Infinity;
         const factor = options.factor ?? 2;
         const maxDelay = options.maxDelay ?? 60000;
@@ -23,31 +18,18 @@ export class Retry {
         let attempt = 1;
 
         while (true) {
-
             try {
-
-                logger.info(
-                    "Retry",
-                    `Attempt ${attempt}`
-                );
+                logger.info("Retry", `Attempt ${attempt}`);
 
                 return await task();
-
             } catch (error) {
-
-                logger.warn(
-                    "Retry",
-                    `Attempt ${attempt} failed`
-                );
+                logger.warn("Retry", `Attempt ${attempt} failed`);
 
                 if (attempt >= retries) {
                     throw error;
                 }
 
-                logger.info(
-                    "Retry",
-                    `Retrying in ${delay} ms`
-                );
+                logger.info("Retry", `Retrying in ${delay} ms`);
 
                 await this.sleep(delay);
 
@@ -59,13 +41,8 @@ export class Retry {
     }
 
     private static sleep(ms: number): Promise<void> {
-
-        return new Promise(resolve => {
-
+        return new Promise((resolve) => {
             setTimeout(resolve, ms);
-
         });
-
     }
-
 }

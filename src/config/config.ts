@@ -15,16 +15,14 @@ export function validateConfig() {
     const missing: string[] = [];
 
     if (!config.monitorRoleId) {
-    missing.push("MONITOR_ROLE_ID");
-}
+        missing.push("MONITOR_ROLE_ID");
+    }
 
     if (!config.token) missing.push("DISCORD_TOKEN");
     if (!config.clientId) missing.push("CLIENT_ID");
     if (!config.guildId) missing.push("GUILD_ID");
 
     if (missing.length > 0) {
-        throw new ConfigurationError(
-            `Missing environment variables: ${missing.join(", ")}`
-        );
+        throw new ConfigurationError(`Missing environment variables: ${missing.join(", ")}`);
     }
 }

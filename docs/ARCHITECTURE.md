@@ -1,7 +1,7 @@
 Application
-    │
+│
 Bootstrap
-    │
+│
 ClientManager
-    │
+│
 Retry

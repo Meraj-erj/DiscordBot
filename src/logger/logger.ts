@@ -1,188 +1,84 @@
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
 
+const logFormat = winston.format.printf((info) => {
+    const timestamp = info.timestamp;
 
-const logFormat = winston.format.printf(
-    (info) => {
+    const level = info.level.toUpperCase();
 
+    const context = info.context ?? "App";
 
-        const timestamp =
-            info.timestamp;
+    const message = info.message;
 
+    return `${timestamp} [${level}] [${context}] ${message}`;
+});
 
-        const level =
-            info.level.toUpperCase();
+const logger = winston.createLogger({
+    level: "debug",
 
+    format: winston.format.combine(
+        winston.format.timestamp({
+            format: "YYYY-MM-DD HH:mm:ss",
+        }),
 
-        const context =
-            info.context ?? "App";
+        logFormat
+    ),
 
+    transports: [
+        new winston.transports.Console(),
 
-        const message =
-            info.message;
+        new DailyRotateFile({
+            dirname: "logs",
 
+            filename: "%DATE%.log",
 
-        return `${timestamp} [${level}] [${context}] ${message}`;
+            datePattern: "YYYY-MM-DD",
 
-    }
-);
-
-
-
-const logger =
-    winston.createLogger({
-
-
-        level: "debug",
-
-
-        format:
-            winston.format.combine(
-
-                winston.format.timestamp({
-
-                    format:
-                    "YYYY-MM-DD HH:mm:ss"
-
-                }),
-
-
-                logFormat
-
-            ),
-
-
-
-        transports: [
-
-
-            new winston.transports.Console(),
-
-
-
-            new DailyRotateFile({
-
-
-                dirname: "logs",
-
-
-                filename:
-                    "%DATE%.log",
-
-
-                datePattern:
-                    "YYYY-MM-DD",
-
-
-                maxFiles:
-                    "30d"
-
-
-            })
-
-
-        ]
-
-
-    });
-
-
-
-
+            maxFiles: "30d",
+        }),
+    ],
+});
 
 class Logger {
-
-
-    public info(
-        context: string,
-        message: string
-    ): void {
-
-
+    public info(context: string, message: string): void {
         logger.info(
-
             message,
 
             {
-                context
+                context,
             }
-
         );
-
-
     }
 
-
-
-
-    public warn(
-        context: string,
-        message: string
-    ): void {
-
-
+    public warn(context: string, message: string): void {
         logger.warn(
-
             message,
 
             {
-                context
+                context,
             }
-
         );
-
-
     }
 
-
-
-
-
-    public error(
-        context: string,
-        message: string
-    ): void {
-
-
+    public error(context: string, message: string): void {
         logger.error(
-
             message,
 
             {
-                context
+                context,
             }
-
         );
-
-
     }
 
-
-
-
-
-    public debug(
-        context: string,
-        message: string
-    ): void {
-
-
+    public debug(context: string, message: string): void {
         logger.debug(
-
             message,
 
             {
-                context
+                context,
             }
-
         );
-
-
     }
-
-
 }
-
-
 
 export default new Logger();

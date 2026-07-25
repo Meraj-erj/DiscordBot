@@ -1,14 +1,10 @@
-import {
-    ChatInputCommandInteraction,
-    GuildMember,
-} from "discord.js";
+import { ChatInputCommandInteraction, GuildMember } from "discord.js";
 
 import { config } from "../config/index.js";
 
 export async function requireMonitorRole(
     interaction: ChatInputCommandInteraction
 ): Promise<boolean> {
-
     if (!interaction.inGuild()) {
         await interaction.reply({
             content: "❌ This command can only be used in a server.",

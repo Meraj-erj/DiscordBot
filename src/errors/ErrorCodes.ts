@@ -1,5 +1,4 @@
 export const ErrorCodes = {
-
     COMMAND_LOAD_ERROR: "CMD-0001",
 
     COMMAND_EXPORT_MISSING: "CMD-0002",
@@ -17,5 +16,4 @@ export const ErrorCodes = {
     CONTAINER_ERROR: "CNT-0001",
 
     DISCORD_CONNECTION_ERROR: "DSC-0001",
-
 } as const;

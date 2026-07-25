@@ -111,11 +111,11 @@ MONITOR_ROLE_ID=YOUR_MONITOR_ROLE_ID
 
 ### Environment Variables
 
-| Variable | Description |
-|---|---|
-| DISCORD_TOKEN | Discord bot authentication token |
-| CLIENT_ID | Discord application ID |
-| GUILD_ID | Development server ID |
+| Variable        | Description                             |
+| --------------- | --------------------------------------- |
+| DISCORD_TOKEN   | Discord bot authentication token        |
+| CLIENT_ID       | Discord application ID                  |
+| GUILD_ID        | Development server ID                   |
 | MONITOR_ROLE_ID | Role allowed to use monitoring commands |
 
 ---
@@ -164,16 +164,16 @@ npm run deploy
 
 ## Available Scripts
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start development mode |
-| `npm run build` | Compile TypeScript |
-| `npm start` | Start production bot |
-| `npm run deploy` | Deploy slash commands |
-| `npm run lint` | Check code quality |
-| `npm run lint:fix` | Fix lint problems |
-| `npm run format` | Format code |
-| `npm run clean` | Remove build files |
+| Command            | Description            |
+| ------------------ | ---------------------- |
+| `npm run dev`      | Start development mode |
+| `npm run build`    | Compile TypeScript     |
+| `npm start`        | Start production bot   |
+| `npm run deploy`   | Deploy slash commands  |
+| `npm run lint`     | Check code quality     |
+| `npm run lint:fix` | Fix lint problems      |
+| `npm run format`   | Format code            |
+| `npm run clean`    | Remove build files     |
 
 ---
 

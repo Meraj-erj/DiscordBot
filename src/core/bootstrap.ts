@@ -13,98 +13,51 @@ import { ClientManager } from "./ClientManager.js";
 import { monitoring } from "../monitoring/index.js";
 
 export class Bootstrap {
-
     private readonly clientManager: ClientManager;
 
     constructor() {
-
         this.clientManager = new ClientManager();
-
     }
 
     public async initialize(): Promise<void> {
-
-        logger.info(
-            "Bootstrap",
-            "Initializing framework"
-        );
+        logger.info("Bootstrap", "Initializing framework");
 
         validateConfig();
 
-        container.register(
-            ServiceTokens.Logger,
-            () => logger
-        );
+        container.register(ServiceTokens.Logger, () => logger);
 
-        container.register(
-            ServiceTokens.Client,
-            () => this.clientManager.getClient()
-        );
+        container.register(ServiceTokens.Client, () => this.clientManager.getClient());
 
-        container.register(
-            ServiceTokens.ClientManager,
-            () => this.clientManager
-        );
+        container.register(ServiceTokens.ClientManager, () => this.clientManager);
 
-        logger.info(
-            "Bootstrap",
-            "Loading commands"
-        );
+        logger.info("Bootstrap", "Loading commands");
 
         await loadCommands();
 
-        logger.info(
-            "Bootstrap",
-            "Loading events"
-        );
+        logger.info("Bootstrap", "Loading events");
 
-        await loadEvents(
-            this.clientManager.getClient()
-        );
+        await loadEvents(this.clientManager.getClient());
 
         await this.clientManager.login();
 
-
-        monitoring.initialize(
-            this.clientManager.getClient()
-        );
-
+        monitoring.initialize(this.clientManager.getClient());
 
         monitoring.start();
 
-        logger.info(
-            "Bootstrap",
-            "Monitoring started"
-        );
+        logger.info("Bootstrap", "Monitoring started");
 
-        logger.info(
-            "Bootstrap",
-            "Framework started"
-        );
-
+        logger.info("Bootstrap", "Framework started");
     }
 
     public async shutdown(): Promise<void> {
-
-        logger.info(
-            "Bootstrap",
-            "Shutting down framework"
-        );
+        logger.info("Bootstrap", "Shutting down framework");
 
         monitoring.stop();
 
-        logger.info(
-            "Bootstrap",
-            "Monitoring stopped"
-        );
+        logger.info("Bootstrap", "Monitoring stopped");
 
         await this.clientManager.destroy();
 
-        logger.info(
-            "Bootstrap",
-            "Framework stopped"
-        );
-
+        logger.info("Bootstrap", "Framework stopped");
     }
-
 }
