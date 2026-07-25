@@ -1,5 +1,9 @@
 # DiscordBot
 
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
+[![Discord.js](https://img.shields.io/badge/Discord.js-v14-blue)](https://discord.js.org/)
+[![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+
 A Discord bot built with **TypeScript** and **Discord.js v14**.
 
 This project is focused on creating a clean, organized, and maintainable Discord bot structure that can be expanded with new features over time.
@@ -22,7 +26,7 @@ Current features include:
 
 ## Features
 
-## Command System
+### Command System
 
 The bot uses a modular command system where each slash command is separated into its own file.
 
@@ -228,6 +232,19 @@ v0.2.1
 - `v0.2.0` - Added monitoring system
 - `v0.2.1` - Added role-based permissions for monitoring commands
 
+## Documentation
+
+Detailed project documentation:
+
+- [Architecture](./docs/architecture.md)
+- [Setup Guide](./docs/setup.md)
+- [Configuration](./docs/configuration.md)
+- [Commands](./docs/commands.md)
+- [Events](./docs/events.md)
+- [Services](./docs/services.md)
+- [Security](./docs/security.md)
+- [Deployment](./docs/deployment.md)
+- [Roadmap](./docs/roadmap.md)
 ---
 
 ## License
