@@ -81,7 +81,7 @@ export async function fullHandler(
                 name: "💻 CPU",
 
                 value:
-`Usage : **${snapshot.system.cpu.toFixed(1)}%**
+                    `Usage : **${snapshot.system.cpu.toFixed(1)}%**
 ${bar(snapshot.system.cpu)}`,
 
                 inline: true
@@ -93,7 +93,7 @@ ${bar(snapshot.system.cpu)}`,
                 name: "🧠 Memory",
 
                 value:
-`Used : **${bytes(snapshot.system.memory.used)}**
+                    `Used : **${bytes(snapshot.system.memory.used)}**
 Free : **${bytes(snapshot.system.memory.free)}**
 
 ${bar(memoryPercent)}`,
@@ -107,7 +107,7 @@ ${bar(memoryPercent)}`,
                 name: "💾 Disk",
 
                 value:
-`Used : **${bytes(snapshot.system.disk.used)}**
+                    `Used : **${bytes(snapshot.system.disk.used)}**
 Free : **${bytes(snapshot.system.disk.free)}**
 
 ${bar(diskPercent)}`,
@@ -121,7 +121,7 @@ ${bar(diskPercent)}`,
                 name: "🌐 Network",
 
                 value:
-`⬇ ${(snapshot.system.network.download / 1024).toFixed(1)} KB/s
+                    `⬇ ${(snapshot.system.network.download / 1024).toFixed(1)} KB/s
 ⬆ ${(snapshot.system.network.upload / 1024).toFixed(1)} KB/s`,
 
                 inline: true
@@ -133,7 +133,7 @@ ${bar(diskPercent)}`,
                 name: "🤖 Discord",
 
                 value:
-`Ping : **${snapshot.discord.ping} ms**`,
+                    `Ping : **${snapshot.discord.ping} ms**`,
 
                 inline: true
 
@@ -144,7 +144,7 @@ ${bar(diskPercent)}`,
                 name: "⚙ Runtime",
 
                 value:
-`Uptime : **${uptime(snapshot.process.uptime)}**
+                    `Uptime : **${uptime(snapshot.process.uptime)}**
 Bot RAM : **${bytes(snapshot.process.memory)}**`,
 
                 inline: true
@@ -156,7 +156,7 @@ Bot RAM : **${bytes(snapshot.process.memory)}**`,
                 name: "📈 CPU History",
 
                 value:
-"`▁▂▃▄▅▆▇▆▅▄▃▂▃▄▅▆▇`",
+                    "`▁▂▃▄▅▆▇▆▅▄▃▂▃▄▅▆▇`",
 
                 inline: false
 
@@ -172,10 +172,11 @@ Bot RAM : **${bytes(snapshot.process.memory)}**`,
 
         .setTimestamp();
 
+
+
     await interaction.reply({
-
-        embeds: [embed]
-
+        embeds: [embed],
+        ephemeral: true,
     });
 
 }

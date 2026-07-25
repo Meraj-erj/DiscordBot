@@ -3,6 +3,8 @@ import {
     ChatInputCommandInteraction
 } from "discord.js";
 
+import { requireMonitorRole } from "../utils/permissions.js";
+
 import type { Command } from "../interfaces/Command.js";
 
 import { basicHandler } from "../monitoring/handlers/basic.js";
@@ -44,6 +46,10 @@ const command: Command = {
     async execute(
         interaction: ChatInputCommandInteraction
     ) {
+
+        if (!(await requireMonitorRole(interaction))) {
+            return;
+        }
 
         const subcommand =
             interaction.options.getSubcommand();

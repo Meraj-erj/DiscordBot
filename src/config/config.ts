@@ -8,10 +8,15 @@ export const config = {
     clientId: process.env.CLIENT_ID || "",
     guildId: process.env.GUILD_ID || "",
     environment: process.env.NODE_ENV || "development",
+    monitorRoleId: process.env.MONITOR_ROLE_ID!,
 };
 
 export function validateConfig() {
     const missing: string[] = [];
+
+    if (!config.monitorRoleId) {
+    missing.push("MONITOR_ROLE_ID");
+}
 
     if (!config.token) missing.push("DISCORD_TOKEN");
     if (!config.clientId) missing.push("CLIENT_ID");

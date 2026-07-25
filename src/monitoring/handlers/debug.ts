@@ -28,7 +28,7 @@ export async function debugHandler(
                 name: "🟢 Process",
 
                 value:
-`PID : ${process.pid}
+                    `PID : ${process.pid}
 Node : ${process.version}
 Platform : ${process.platform}
 Arch : ${process.arch}`
@@ -40,7 +40,7 @@ Arch : ${process.arch}`
                 name: "💾 Memory",
 
                 value:
-`RSS : ${(mem.rss / 1024 / 1024).toFixed(2)} MB
+                    `RSS : ${(mem.rss / 1024 / 1024).toFixed(2)} MB
 Heap Total : ${(mem.heapTotal / 1024 / 1024).toFixed(2)} MB
 Heap Used : ${(mem.heapUsed / 1024 / 1024).toFixed(2)} MB
 External : ${(mem.external / 1024 / 1024).toFixed(2)} MB`
@@ -52,7 +52,7 @@ External : ${(mem.external / 1024 / 1024).toFixed(2)} MB`
                 name: "⏱ Runtime",
 
                 value:
-`Uptime : ${Math.floor(process.uptime())} sec
+                    `Uptime : ${Math.floor(process.uptime())} sec
 Environment : ${process.env.NODE_ENV ?? "development"}`
 
             }
@@ -67,10 +67,11 @@ Environment : ${process.env.NODE_ENV ?? "development"}`
 
         .setTimestamp();
 
+
+
     await interaction.reply({
-
-        embeds: [embed]
-
+        embeds: [embed],
+        ephemeral: true,
     });
 
 }

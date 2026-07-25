@@ -59,7 +59,7 @@ export async function basicHandler(
             {
                 name: "💻 Resources",
                 value:
-`**CPU**\n${bar(snapshot.system.cpu)} \`${snapshot.system.cpu.toFixed(1)}%\`
+                    `**CPU**\n${bar(snapshot.system.cpu)} \`${snapshot.system.cpu.toFixed(1)}%\`
 
 **Memory**\n${bar(ram)} \`${ram.toFixed(1)}%\`
 
@@ -70,7 +70,7 @@ export async function basicHandler(
             {
                 name: "⚡ Runtime",
                 value:
-`⏱ **Up**\n${uptime(snapshot.process.uptime)}
+                    `⏱ **Up**\n${uptime(snapshot.process.uptime)}
 
 🧠 **RAM**
 ${Math.round(snapshot.process.memory / 1024 / 1024)} MB
@@ -83,7 +83,7 @@ ${snapshot.discord.ping} ms`,
             {
                 name: "📈 CPU History",
                 value:
-"`▁▂▃▄▅▆▇▆▅▄▃▂▃▄▅▆`",
+                    "`▁▂▃▄▅▆▇▆▅▄▃▂▃▄▅▆`",
                 inline: false
             }
 
@@ -95,7 +95,12 @@ ${snapshot.discord.ping} ms`,
 
         .setTimestamp();
 
+
+
     await interaction.reply({
-        embeds: [embed]
+        embeds: [embed],
+        ephemeral: true,
     });
 }
+
+
