@@ -1,27 +1,98 @@
 # DiscordBot
 
-DiscordBot is a Discord bot built with TypeScript and Discord.js. The project focuses on providing a clean and maintainable codebase that can be extended over time without major architectural changes.
+A Discord bot built with **TypeScript** and **Discord.js v14**.
 
-The current implementation includes a modular command system, dynamic event loading, logging, monitoring utilities, dependency injection, and configuration management.
+This project is focused on creating a clean, organized, and maintainable Discord bot structure that can be expanded with new features over time.
+
+Instead of putting everything into a single file, the bot uses a modular architecture where commands, events, services, and internal systems are separated to keep the code easier to understand and maintain.
+
+Current features include:
+
+- Modular Slash Commands
+- Dynamic Event Loading
+- Dependency Injection Container
+- Configuration Management
+- Structured Logging
+- System Monitoring
+- Role-Based Command Permissions
+- Error Handling
+- Type-Safe Development with TypeScript
+
+---
+
+## Features
+
+## Command System
+
+The bot uses a modular command system where each slash command is separated into its own file.
+
+This makes adding new commands easier and keeps the project structure clean.
+
+Current commands:
+
+- `/ping`
+- `/mon`
+
+---
+
+## Monitoring System
+
+The monitoring system allows authorized users to check information about the bot and its environment.
+
+Available commands:
+
+```bash
+/mon basic
+/mon full
+/mon debug
+```
+
+The monitoring system provides information such as:
+
+- CPU usage
+- Memory usage
+- Disk usage
+- Running process information
+- Node.js runtime details
+- Discord connection latency
+- Basic system diagnostics
+
+Monitoring commands are protected using role-based permissions.
+
+---
+
+## Security
+
+The bot follows several security practices:
+
+- Sensitive data is stored using environment variables
+- Bot tokens are never stored directly in the code
+- Administrative commands have permission checks
+- Users receive safe error messages
+- Detailed errors are stored internally through logging
 
 ---
 
 ## Requirements
 
-* Node.js 22 or later
-* npm
+- Node.js 22+
+- npm
 
 ---
 
 ## Installation
 
-Clone the repository and install the dependencies.
+Clone the repository:
 
 ```bash
 git clone https://github.com/Meraj-erj/DiscordBot.git
 
 cd DiscordBot
+```
 
+Install dependencies:
+
+```bash
 npm install
 ```
 
@@ -29,29 +100,41 @@ npm install
 
 ## Configuration
 
-Create a `.env` file in the project root.
+Create a `.env` file in the project root:
 
 ```env
 DISCORD_TOKEN=YOUR_BOT_TOKEN
 CLIENT_ID=YOUR_CLIENT_ID
 GUILD_ID=YOUR_GUILD_ID
+MONITOR_ROLE_ID=YOUR_MONITOR_ROLE_ID
 ```
+
+### Environment Variables
+
+| Variable | Description |
+|---|---|
+| DISCORD_TOKEN | Discord bot authentication token |
+| CLIENT_ID | Discord application ID |
+| GUILD_ID | Development server ID |
+| MONITOR_ROLE_ID | Role allowed to use monitoring commands |
 
 ---
 
 ## Development
 
-Start the development server.
+Run the bot in development mode:
 
 ```bash
 npm run dev
 ```
 
+The development environment uses TypeScript runtime execution with automatic reload.
+
 ---
 
 ## Build
 
-Compile the project.
+Compile the TypeScript project:
 
 ```bash
 npm run build
@@ -59,9 +142,9 @@ npm run build
 
 ---
 
-## Run
+## Production
 
-Run the compiled application.
+Start the compiled bot:
 
 ```bash
 npm start
@@ -71,7 +154,7 @@ npm start
 
 ## Deploy Commands
 
-Register or update slash commands.
+Register slash commands with Discord:
 
 ```bash
 npm run deploy
@@ -79,38 +162,71 @@ npm run deploy
 
 ---
 
+## Available Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development mode |
+| `npm run build` | Compile TypeScript |
+| `npm start` | Start production bot |
+| `npm run deploy` | Deploy slash commands |
+| `npm run lint` | Check code quality |
+| `npm run lint:fix` | Fix lint problems |
+| `npm run format` | Format code |
+| `npm run clean` | Remove build files |
+
+---
+
 ## Project Structure
 
 ```text
 src/
-├── commands/
-├── config/
-├── container/
-├── core/
-├── deploy/
-├── errors/
-├── events/
-├── handlers/
-├── interfaces/
-├── monitoring/
-├── utils/
-├── validators/
-└── index.ts
+├── commands/        # Slash commands
+├── config/          # Environment configuration
+├── container/       # Dependency injection
+├── core/            # Bot lifecycle management
+├── errors/          # Error handling
+├── events/          # Discord events
+├── handlers/        # Command and event loaders
+├── interfaces/      # TypeScript interfaces
+├── logger/          # Logging system
+├── monitoring/      # Monitoring features
+├── utils/           # Helper functions
+├── validators/      # Validation logic
+└── index.ts         # Bot entry point
 ```
 
 ---
 
-## Project Goals
+## Architecture
 
-The project is designed around a small set of principles:
+The project is built around a few main principles:
 
-* Clear project structure
-* Strong type safety
-* Separation of concerns
-* Reusable components
-* Long-term maintainability
+- Clean and readable code
+- Separation of responsibilities
+- Strong TypeScript typing
+- Modular components
+- Reusable systems
+- Easier future development
 
-Additional features and modules will be added as the project evolves.
+The goal is to have a Discord bot structure that remains simple to maintain while allowing new features to be added without rewriting the entire project.
+
+---
+
+## Version
+
+This project follows Semantic Versioning.
+
+Current version:
+
+```
+v0.2.1
+```
+
+### Release History
+
+- `v0.2.0` - Added monitoring system
+- `v0.2.1` - Added role-based permissions for monitoring commands
 
 ---
 
