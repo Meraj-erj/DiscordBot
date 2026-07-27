@@ -1,5 +1,7 @@
 import * as dotenv from "dotenv";
 
+import logger from "./logger/logger.js";
+
 import { loadCommands } from "./handlers/commandHandler.js";
 import { deployCommands } from "./handlers/deployCommands.js";
 
@@ -36,7 +38,7 @@ async function runWithRetry(
 }
 
 async function main(): Promise<void> {
-    console.log("📦 Loading commands...");
+    logger.info("Deploy", "Loading commands...");
 
     await loadCommands();
 
@@ -54,7 +56,7 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-    console.error("❌ Deploy failed permanently:");
+    logger.error("Deploy", "Deploy failed permanently:");
 
     console.error(error);
 
