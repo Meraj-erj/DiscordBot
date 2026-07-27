@@ -25,12 +25,12 @@ NODE_ENV=
 
 ## Variables
 
-| Variable | Required | Description |
-|---|---|---|
-| DISCORD_TOKEN | Yes | Authentication token used to connect the bot to Discord |
-| CLIENT_ID | Yes | Discord application identifier |
-| GUILD_ID | Yes | Development server identifier |
-| NODE_ENV | No | Application environment |
+| Variable      | Required | Description                                             |
+| ------------- | -------- | ------------------------------------------------------- |
+| DISCORD_TOKEN | Yes      | Authentication token used to connect the bot to Discord |
+| CLIENT_ID     | Yes      | Discord application identifier                          |
+| GUILD_ID      | Yes      | Development server identifier                           |
+| NODE_ENV      | No       | Application environment                                 |
 
 ---
 
@@ -93,10 +93,10 @@ NODE_ENV=development
 
 Possible values:
 
-| Value | Purpose |
-|---|---|
-| development | Local development |
-| production | Production deployment |
+| Value       | Purpose               |
+| ----------- | --------------------- |
+| development | Local development     |
+| production  | Production deployment |
 
 ---
 

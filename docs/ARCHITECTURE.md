@@ -24,7 +24,6 @@ src/
 ├── config/
 └── index.ts
 
-
 ---
 
 ## Core Components
@@ -40,7 +39,6 @@ Example:
 
 commands/
 └── ping.ts
-
 
 ---
 
@@ -98,25 +96,24 @@ This improves:
 ## Application Flow
 
 Application Start
-    |
-    v
+|
+v
 Initialize Configuration
-    |
-    v
+|
+v
 Create Discord Client
-    |
-    v
+|
+v
 Initialize Container
-    |
-    v
+|
+v
 Load Commands and Events
-    |
-    v
+|
+v
 Connect to Discord Gateway
-    |
-    v
+|
+v
 Bot Ready
-
 
 ---
 

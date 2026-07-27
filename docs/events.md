@@ -163,8 +163,8 @@ export default {
 
     async execute(...args) {
         // event logic
-    }
-}
+    },
+};
 ```
 
 ---

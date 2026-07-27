@@ -97,8 +97,8 @@ export default {
 
     async execute(interaction) {
         // command logic
-    }
-}
+    },
+};
 ```
 
 ---

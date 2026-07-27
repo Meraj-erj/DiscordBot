@@ -58,11 +58,11 @@ GUILD_ID=
 
 ### Environment Variables
 
-| Variable | Description |
-|---|---|
+| Variable      | Description                      |
+| ------------- | -------------------------------- |
 | DISCORD_TOKEN | Discord bot authentication token |
-| CLIENT_ID | Discord application ID |
-| GUILD_ID | Development server ID |
+| CLIENT_ID     | Discord application ID           |
+| GUILD_ID      | Development server ID            |
 
 ---
 
@@ -98,14 +98,14 @@ npm start
 
 ## Available Scripts
 
-| Command | Description |
-|---|---|
-| npm run dev | Start development mode |
-| npm run build | Compile TypeScript |
-| npm start | Run production build |
-| npm run lint | Check code quality |
+| Command        | Description                |
+| -------------- | -------------------------- |
+| npm run dev    | Start development mode     |
+| npm run build  | Compile TypeScript         |
+| npm start      | Run production build       |
+| npm run lint   | Check code quality         |
 | npm run format | Format code using Prettier |
-| npm run deploy | Deploy Discord commands |
+| npm run deploy | Deploy Discord commands    |
 
 ---
 
