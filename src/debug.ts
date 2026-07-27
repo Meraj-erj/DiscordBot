@@ -12,7 +12,7 @@ dotenv.config();
 const report: string[] = [];
 
 function line(text = ""): void {
-    console.log(text);
+    process.stdout.write(`${text}\n`);
     report.push(text);
 }
 
