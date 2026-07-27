@@ -1,6 +1,7 @@
 import type { Event } from "../interfaces/Event.js";
 import { commands } from "../collections/commands.js";
 import { ChatInputCommandInteraction } from "discord.js";
+import logger from "../logger/logger.js";
 
 const event: Event = {
     name: "interactionCreate",
@@ -15,7 +16,9 @@ const event: Event = {
         try {
             await command.execute(interaction);
         } catch (error) {
-            console.error(error);
+            if (error instanceof Error) {
+                logger.error("Interaction", error.message);
+            }
 
             if (interaction.replied || interaction.deferred) {
                 await interaction.followUp({

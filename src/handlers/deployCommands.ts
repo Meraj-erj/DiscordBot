@@ -1,5 +1,7 @@
 import { REST, Routes } from "discord.js";
+
 import { commands } from "../collections/commands.js";
+import logger from "../logger/logger.js";
 
 export async function deployCommands(): Promise<void> {
     const rest = new REST({
@@ -7,13 +9,14 @@ export async function deployCommands(): Promise<void> {
     }).setToken(process.env.DISCORD_TOKEN!);
 
     try {
-        console.log("CLIENT_ID:", process.env.CLIENT_ID);
+        logger.debug("Deploy", `CLIENT_ID: ${process.env.CLIENT_ID}`);
+        logger.debug("Deploy", `GUILD_ID: ${process.env.GUILD_ID}`);
 
-        console.log("GUILD_ID:", process.env.GUILD_ID);
-
-        console.log(
-            "Commands:",
-            Array.from(commands.values()).map((command) => command.data.name)
+        logger.debug(
+            "Deploy",
+            `Commands: ${Array.from(commands.values())
+                .map((command) => command.data.name)
+                .join(", ")}`
         );
 
         await rest.put(
@@ -23,13 +26,14 @@ export async function deployCommands(): Promise<void> {
             }
         );
 
-        console.log(`✅ ${commands.size} command(s) deployed.`);
+        logger.info("Deploy", `${commands.size} command(s) deployed.`);
     } catch (error) {
-        console.error("❌ Deploy failed:");
+        logger.error("Deploy", "Deploy failed.");
 
-        console.error(error);
+        if (error instanceof Error) {
+            logger.error("Deploy", error.message);
+        }
 
-        // مهم برای Retry
         throw error;
     }
 }

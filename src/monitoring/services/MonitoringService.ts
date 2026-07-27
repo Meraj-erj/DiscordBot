@@ -1,4 +1,5 @@
 import type { Client } from "discord.js";
+import logger from "../../logger/logger.js";
 
 import { HistoryBuffer } from "../history/HistoryBuffer.js";
 import { SystemProvider } from "../providers/SystemProvider.js";
@@ -23,7 +24,9 @@ export class MonitoringService {
 
                 this.history.add(snapshot);
             } catch (error) {
-                console.error(error);
+                if (error instanceof Error) {
+                    logger.error("Monitoring", error.message);
+                }
             }
         }, interval);
     }
