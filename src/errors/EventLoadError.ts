@@ -1,7 +1,10 @@
-import { BaseError } from "./BaseError.js";
+import { FrameworkError } from "./FrameworkError.js";
 
-export class EventLoadError extends BaseError {
+export class EventLoadError extends FrameworkError {
     constructor(message: string) {
-        super("EVENT_LOAD_ERROR", message);
+        super({
+            code: "EVENT_LOAD_ERROR",
+            message,
+        });
     }
 }
