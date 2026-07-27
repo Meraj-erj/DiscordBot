@@ -3,6 +3,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
 [![Discord.js](https://img.shields.io/badge/Discord.js-v14-blue)](https://discord.js.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+[![CI](https://github.com/Meraj-erj/DiscordBot/actions/workflows/ci.yml/badge.svg)](https://github.com/Meraj-erj/DiscordBot/actions/workflows/ci.yml)
 
 A Discord bot built with **TypeScript** and **Discord.js v14**.
 
