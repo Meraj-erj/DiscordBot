@@ -44,13 +44,18 @@
         "chalk": "^5.6.2",
         "discord.js": "^14.27.0",
         "dotenv": "^17.4.2",
+        "global-agent": "^3.0.0",
+        "socks": "^2.8.3",
+        "socks-proxy-agent": "^8.0.4",
         "systeminformation": "^5.32.0",
+        "undici": "^6.27.0",
         "winston": "^3.19.0",
         "winston-daily-rotate-file": "^5.0.0"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
         "@types/dotenv": "^6.1.1",
+        "@types/global-agent": "^3.0.0",
         "@types/node": "^26.1.1",
         "@types/winston": "^2.4.4",
         "eslint": "^10.7.0",

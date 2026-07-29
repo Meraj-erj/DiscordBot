@@ -12,11 +12,15 @@ import { ClientManager } from "./ClientManager.js";
 
 import { monitoring } from "../monitoring/index.js";
 
+import { ProxyManager } from "../proxy/ProxyManager.js";
+
 export class Bootstrap {
-    private readonly clientManager: ClientManager;
+    private readonly proxyManager: ProxyManager;
+
+    private clientManager!: ClientManager;
 
     constructor() {
-        this.clientManager = new ClientManager();
+        this.proxyManager = new ProxyManager();
     }
 
     public async initialize(): Promise<void> {
@@ -24,11 +28,19 @@ export class Bootstrap {
 
         validateConfig();
 
+        logger.info("Bootstrap", "Preparing proxy layer");
+
+        await this.proxyManager.initialize();
+
+        this.clientManager = new ClientManager(this.proxyManager.getRestAgent());
+
         container.register(ServiceTokens.Logger, () => logger);
 
         container.register(ServiceTokens.Client, () => this.clientManager.getClient());
 
         container.register(ServiceTokens.ClientManager, () => this.clientManager);
+
+        container.register(ServiceTokens.ProxyManager, () => this.proxyManager);
 
         logger.info("Bootstrap", "Loading commands");
 
@@ -57,6 +69,8 @@ export class Bootstrap {
         logger.info("Bootstrap", "Monitoring stopped");
 
         await this.clientManager.destroy();
+
+        this.proxyManager.shutdown();
 
         logger.info("Bootstrap", "Framework stopped");
     }

@@ -21,6 +21,7 @@ Current features include:
 - System Monitoring
 - Role-Based Command Permissions
 - Error Handling
+- Discord-Only Proxy Layer (HTTP/HTTPS/SOCKS5)
 - Type-Safe Development with TypeScript
 
 ---
@@ -63,6 +64,23 @@ The monitoring system provides information such as:
 - Basic system diagnostics
 
 Monitoring commands are protected using role-based permissions.
+
+---
+
+## Proxy Layer
+
+DiscordBot can route its Discord traffic through an HTTP, HTTPS, or
+SOCKS5 proxy — useful when Discord is blocked on the host network.
+
+- Only Discord-related traffic is affected (REST + Gateway).
+- Controlled entirely through environment variables (`PROXY_ENABLED`,
+  `PROXY_TYPE`, `PROXY_URL`).
+- Automatic reconnect with infinite retries and exponential backoff.
+- Background health monitoring with automatic recovery detection.
+- No application crashes on temporary proxy failures.
+- When `PROXY_ENABLED=false`, behavior is completely unchanged.
+
+See [Configuration](./docs/configuration.md#proxy-configuration) for details.
 
 ---
 
@@ -112,6 +130,10 @@ DISCORD_TOKEN=YOUR_BOT_TOKEN
 CLIENT_ID=YOUR_CLIENT_ID
 GUILD_ID=YOUR_GUILD_ID
 MONITOR_ROLE_ID=YOUR_MONITOR_ROLE_ID
+
+PROXY_ENABLED=false
+PROXY_TYPE=http
+PROXY_URL=
 ```
 
 ### Environment Variables
@@ -122,6 +144,9 @@ MONITOR_ROLE_ID=YOUR_MONITOR_ROLE_ID
 | CLIENT_ID       | Discord application ID                  |
 | GUILD_ID        | Development server ID                   |
 | MONITOR_ROLE_ID | Role allowed to use monitoring commands |
+| PROXY_ENABLED   | Enable/disable the Discord-only proxy   |
+| PROXY_TYPE      | `http`, `https`, or `socks5`            |
+| PROXY_URL       | Proxy connection string                 |
 
 ---
 
@@ -196,8 +221,9 @@ src/
 ├── interfaces/      # TypeScript interfaces
 ├── logger/          # Logging system
 ├── monitoring/      # Monitoring features
+├── proxy/           # Discord-only proxy layer (HTTP/HTTPS/SOCKS5)
 ├── utils/           # Helper functions
-├── validators/      # Validation logic
+├── validators/       # Validation logic
 └── index.ts         # Bot entry point
 ```
 
@@ -224,14 +250,11 @@ This project follows Semantic Versioning.
 
 Current version:
 
-```
-v0.2.1
-```
-
 ### Release History
 
 - `v0.2.0` - Added monitoring system
 - `v0.2.1` - Added role-based permissions for monitoring commands
+- `v0.3.0` - Added Discord-only proxy layer (HTTP/HTTPS/SOCKS5)
 
 ## Documentation
 

@@ -8,6 +8,8 @@ export const ServiceTokens = {
     Config: "config",
 
     Application: "application",
+
+    ProxyManager: "proxyManager",
 } as const;
 
 export type ServiceToken = (typeof ServiceTokens)[keyof typeof ServiceTokens];

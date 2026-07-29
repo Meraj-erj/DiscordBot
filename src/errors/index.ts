@@ -3,6 +3,7 @@ export * from "./CommandLoadError.js";
 export * from "./ConfigurationError.js";
 export * from "./ContainerError.js";
 export * from "./DiscordConnectionError.js";
+export * from "./ProxyError.js";
 
 export * from "./ErrorCodes.js";
 export * from "./FrameworkError.js";

@@ -1,4 +1,5 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, GatewayIntentBits, type ClientOptions } from "discord.js";
+import type { Dispatcher } from "undici";
 
 import logger from "../logger/logger.js";
 import { DiscordConnectionError, ErrorFactory, ErrorFormatter } from "../errors/index.js";
@@ -8,16 +9,19 @@ import { validateConfig } from "../config/config.js";
 export class ClientManager {
     private readonly client: Client;
 
-    constructor() {
+    constructor(restAgent?: Dispatcher) {
         validateConfig();
 
-        this.client = new Client({
+        const options: ClientOptions = {
             intents: [
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.MessageContent,
             ],
-        });
+            ...(restAgent ? { rest: { agent: restAgent } } : {}),
+        };
+
+        this.client = new Client(options);
 
         this.registerEvents();
     }
