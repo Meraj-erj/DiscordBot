@@ -7,7 +7,7 @@ development setup, configuration, and internal systems.
 
 ## Documentation
 
-- [Architecture](./architecture.md)
+- [Architecture](./ARCHITECTURE.md)
 - [Setup Guide](./setup.md)
 - [Configuration](./configuration.md)
 - [Commands](./commands.md)
@@ -15,7 +15,7 @@ development setup, configuration, and internal systems.
 - [Services](./services.md)
 - [Security](./security.md)
 - [Deployment](./deployment.md)
-- [Roadmap](./roadmap.md)
+- [Roadmap](./ROADMAP.md)
 
 ## About This Project
 
