@@ -39,6 +39,10 @@ export class ProxyManager {
         return this.dispatcher;
     }
 
+    public getConfig(): ProxyConfig {
+        return this.config;
+    }
+
     public async initialize(): Promise<void> {
         if (!this.config.enabled) {
             logger.info("Proxy", "Proxy is disabled. Connecting to Discord directly.");

@@ -14,6 +14,7 @@ export interface ProxyConfig {
     url: string;
     connectTimeoutMs: number;
     healthCheckIntervalMs: number;
+    restKeepAliveIntervalMs: number;
     retry: ProxyRetryConfig;
 }
 
@@ -74,6 +75,8 @@ export function loadProxyConfig(): ProxyConfig {
         connectTimeoutMs: parseNumber(process.env.PROXY_CONNECT_TIMEOUT_MS, 10000),
 
         healthCheckIntervalMs: parseNumber(process.env.PROXY_HEALTHCHECK_INTERVAL_MS, 60000),
+
+        restKeepAliveIntervalMs: parseNumber(process.env.PROXY_REST_KEEPALIVE_INTERVAL_MS, 240000),
 
         retry: {
             delay: parseNumber(process.env.PROXY_RETRY_DELAY_MS, 5000),

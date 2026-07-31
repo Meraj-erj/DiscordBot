@@ -13,11 +13,14 @@ import { ClientManager } from "./ClientManager.js";
 import { monitoring } from "../monitoring/index.js";
 
 import { ProxyManager } from "../proxy/ProxyManager.js";
+import { RestKeepAlive } from "../proxy/RestKeepAlive.js";
 
 export class Bootstrap {
     private readonly proxyManager: ProxyManager;
 
     private clientManager!: ClientManager;
+
+    private restKeepAlive: RestKeepAlive | undefined;
 
     constructor() {
         this.proxyManager = new ProxyManager();
@@ -52,6 +55,15 @@ export class Bootstrap {
 
         await this.clientManager.login();
 
+        if (this.proxyManager.isEnabled()) {
+            this.restKeepAlive = new RestKeepAlive(
+                this.clientManager.getClient(),
+                this.proxyManager.getConfig().restKeepAliveIntervalMs
+            );
+
+            this.restKeepAlive.start();
+        }
+
         monitoring.initialize(this.clientManager.getClient());
 
         monitoring.start();
@@ -67,6 +79,8 @@ export class Bootstrap {
         monitoring.stop();
 
         logger.info("Bootstrap", "Monitoring stopped");
+
+        this.restKeepAlive?.stop();
 
         await this.clientManager.destroy();
 

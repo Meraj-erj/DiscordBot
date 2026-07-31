@@ -1,6 +1,7 @@
+import { ChatInputCommandInteraction, MessageFlags } from "discord.js";
+
 import type { Event } from "../interfaces/Event.js";
 import { commands } from "../collections/commands.js";
-import { ChatInputCommandInteraction } from "discord.js";
 import logger from "../logger/logger.js";
 
 const event: Event = {
@@ -20,15 +21,24 @@ const event: Event = {
                 logger.error("Interaction", error.message);
             }
 
-            if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({
-                    content: "❌ An error occurred.",
-                });
-            } else {
-                await interaction.reply({
-                    content: "❌ An error occurred.",
-                    ephemeral: true,
-                });
+            try {
+                if (interaction.replied || interaction.deferred) {
+                    await interaction.followUp({
+                        content: "❌ An error occurred.",
+                    });
+                } else {
+                    await interaction.reply({
+                        content: "❌ An error occurred.",
+                        flags: MessageFlags.Ephemeral,
+                    });
+                }
+            } catch (replyError) {
+                if (replyError instanceof Error) {
+                    logger.error(
+                        "Interaction",
+                        `Failed to notify user of error: ${replyError.message}`
+                    );
+                }
             }
         }
     },

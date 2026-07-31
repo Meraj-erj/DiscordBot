@@ -1,6 +1,8 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 
 export async function debugHandler(interaction: ChatInputCommandInteraction) {
+    await interaction.deferReply();
+
     const mem = process.memoryUsage();
 
     const embed = new EmbedBuilder()
@@ -46,8 +48,7 @@ Environment : ${process.env.NODE_ENV ?? "development"}`,
 
         .setTimestamp();
 
-    await interaction.reply({
+    await interaction.editReply({
         embeds: [embed],
-        ephemeral: true,
     });
 }

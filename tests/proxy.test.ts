@@ -74,6 +74,28 @@ describe("ProxyConfig", () => {
 
         expect(() => loadProxyConfig()).toThrow(ProxyError);
     });
+
+    it("should default restKeepAliveIntervalMs to 240000ms", () => {
+        process.env.PROXY_ENABLED = "true";
+        process.env.PROXY_TYPE = "http";
+        process.env.PROXY_URL = "http://127.0.0.1:8080";
+        delete process.env.PROXY_REST_KEEPALIVE_INTERVAL_MS;
+
+        const config = loadProxyConfig();
+
+        expect(config.restKeepAliveIntervalMs).toBe(240000);
+    });
+
+    it("should read a custom restKeepAliveIntervalMs from the environment", () => {
+        process.env.PROXY_ENABLED = "true";
+        process.env.PROXY_TYPE = "http";
+        process.env.PROXY_URL = "http://127.0.0.1:8080";
+        process.env.PROXY_REST_KEEPALIVE_INTERVAL_MS = "60000";
+
+        const config = loadProxyConfig();
+
+        expect(config.restKeepAliveIntervalMs).toBe(60000);
+    });
 });
 
 describe("ProxyAgentFactory", () => {
@@ -84,6 +106,7 @@ describe("ProxyAgentFactory", () => {
             url: "http://127.0.0.1:8080",
             connectTimeoutMs: 1000,
             healthCheckIntervalMs: 1000,
+            restKeepAliveIntervalMs: 240000,
             retry: { delay: 100, factor: 2, maxDelay: 1000 },
         });
 
@@ -98,6 +121,7 @@ describe("ProxyAgentFactory", () => {
             url: "socks5://127.0.0.1:1080",
             connectTimeoutMs: 1000,
             healthCheckIntervalMs: 1000,
+            restKeepAliveIntervalMs: 240000,
             retry: { delay: 100, factor: 2, maxDelay: 1000 },
         });
 

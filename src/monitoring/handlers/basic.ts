@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 
 import { monitoring } from "../index.js";
 
@@ -15,13 +15,16 @@ function uptime(seconds: number): string {
 }
 
 export async function basicHandler(interaction: ChatInputCommandInteraction) {
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
     const snapshot = monitoring.latest();
 
     if (!snapshot) {
-        return interaction.reply({
+        await interaction.editReply({
             content: "Monitoring is not ready.",
-            ephemeral: true,
         });
+
+        return;
     }
 
     const ram = (snapshot.system.memory.used / snapshot.system.memory.total) * 100;
@@ -79,8 +82,7 @@ ${snapshot.discord.ping} ms`,
 
         .setTimestamp();
 
-    await interaction.reply({
+    await interaction.editReply({
         embeds: [embed],
-        ephemeral: true,
     });
 }

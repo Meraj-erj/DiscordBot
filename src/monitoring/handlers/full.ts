@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 
 import { monitoring } from "../index.js";
 
@@ -21,14 +21,16 @@ function bytes(bytes: number): string {
 }
 
 export async function fullHandler(interaction: ChatInputCommandInteraction) {
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
     const snapshot = monitoring.latest();
 
     if (!snapshot) {
-        return interaction.reply({
+        await interaction.editReply({
             content: "Monitoring is not ready.",
-
-            ephemeral: true,
         });
+
+        return;
     }
 
     const memoryPercent = (snapshot.system.memory.used / snapshot.system.memory.total) * 100;
@@ -120,8 +122,7 @@ Bot RAM : **${bytes(snapshot.process.memory)}**`,
 
         .setTimestamp();
 
-    await interaction.reply({
+    await interaction.editReply({
         embeds: [embed],
-        ephemeral: true,
     });
 }
