@@ -249,13 +249,14 @@ The goal is to have a Discord bot structure that remains simple to maintain whil
 This project follows Semantic Versioning.
 
 Current version:
-v0.3.0-beta.1
+**v0.3.0-beta.2**
 
 ### Release History
 
-- `v0.2.0` - Added monitoring system
-- `v0.2.1` - Added role-based permissions for monitoring commands
-- `v0.3.0-beta.1` - Added Discord-only proxy layer (HTTP/HTTPS/SOCKS5)
+* v0.2.0 - Added monitoring system
+* v0.2.1 - Added role-based permissions for monitoring commands
+* v0.3.0-beta.1 - Added Discord-only proxy layer (HTTP/HTTPS/SOCKS5)
+* v0.3.0-beta.2 - Improved proxy reliability (REST keep-alive, better interaction handling)
 
 ## Documentation
 
