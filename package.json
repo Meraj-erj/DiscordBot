@@ -1,6 +1,6 @@
 {
     "name": "discordbot",
-    "version": "0.3.0-beta.1",
+    "version": "0.3.0-beta.2",
     "description": "Production-ready Discord bot built with TypeScript and Discord.js.",
     "private": true,
     "type": "module",
