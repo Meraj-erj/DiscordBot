@@ -42,4 +42,32 @@ describe("Retry", () => {
 
         expect(task).toHaveBeenCalledTimes(3);
     });
+
+    it("should support infinite retries", async () => {
+        const task = vi
+            .fn()
+            .mockRejectedValueOnce(new Error("failed"))
+            .mockResolvedValue("success");
+
+        const result = await Retry.run(task, {
+            retries: Infinity,
+            delay: 10,
+        });
+
+        expect(result).toBe("success");
+        expect(task).toHaveBeenCalledTimes(2);
+    });
+
+    it("should stop after one attempt when retries is 1", async () => {
+        const task = vi.fn().mockRejectedValue(new Error("failed"));
+
+        await expect(
+            Retry.run(task, {
+                retries: 1,
+                delay: 10,
+            })
+        ).rejects.toThrow("failed");
+
+        expect(task).toHaveBeenCalledTimes(1);
+    });
 });
