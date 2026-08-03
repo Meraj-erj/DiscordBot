@@ -253,10 +253,10 @@ Current version:
 
 ### Release History
 
-* v0.2.0 - Added monitoring system
-* v0.2.1 - Added role-based permissions for monitoring commands
-* v0.3.0-beta.1 - Added Discord-only proxy layer (HTTP/HTTPS/SOCKS5)
-* v0.3.0-beta.2 - Improved proxy reliability (REST keep-alive, better interaction handling)
+- v0.2.0 - Added monitoring system
+- v0.2.1 - Added role-based permissions for monitoring commands
+- v0.3.0-beta.1 - Added Discord-only proxy layer (HTTP/HTTPS/SOCKS5)
+- v0.3.0-beta.2 - Improved proxy reliability (REST keep-alive, better interaction handling)
 
 ## Documentation
 
