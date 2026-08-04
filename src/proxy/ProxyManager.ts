@@ -141,7 +141,8 @@ export class ProxyManager {
     private async checkProxyReachable(): Promise<void> {
         const target = new URL(this.config.url);
 
-        const defaultPort = this.config.type === "socks5" ? 1080 : this.config.type === "http" ? 80 : 443;
+        const defaultPort =
+            this.config.type === "socks5" ? 1080 : this.config.type === "http" ? 80 : 443;
         const port = Number(target.port || defaultPort);
 
         await new Promise<void>((resolve, reject) => {
