@@ -75,6 +75,14 @@ describe("ProxyConfig", () => {
         expect(() => loadProxyConfig()).toThrow(ProxyError);
     });
 
+    it("should reject a PROXY_URL protocol that does not match PROXY_TYPE", () => {
+        process.env.PROXY_ENABLED = "true";
+        process.env.PROXY_TYPE = "http";
+        process.env.PROXY_URL = "socks5://127.0.0.1:1080";
+
+        expect(() => loadProxyConfig()).toThrow(ProxyError);
+    });
+
     it("should default restKeepAliveIntervalMs to 240000ms", () => {
         process.env.PROXY_ENABLED = "true";
         process.env.PROXY_TYPE = "http";
@@ -96,54 +104,54 @@ describe("ProxyConfig", () => {
 
         expect(config.restKeepAliveIntervalMs).toBe(60000);
     });
-});
 
-it("should use defaults for invalid numeric environment values", () => {
-    process.env.PROXY_ENABLED = "true";
-    process.env.PROXY_TYPE = "http";
-    process.env.PROXY_URL = "http://127.0.0.1:8080";
+    it("should use defaults for invalid numeric environment values", () => {
+        process.env.PROXY_ENABLED = "true";
+        process.env.PROXY_TYPE = "http";
+        process.env.PROXY_URL = "http://127.0.0.1:8080";
 
-    process.env.PROXY_CONNECT_TIMEOUT_MS = "invalid";
-    process.env.PROXY_HEALTHCHECK_INTERVAL_MS = "-1";
-    process.env.PROXY_REST_KEEPALIVE_INTERVAL_MS = "0";
-    process.env.PROXY_RETRY_DELAY_MS = "invalid";
-    process.env.PROXY_RETRY_FACTOR = "-2";
-    process.env.PROXY_RETRY_MAX_DELAY_MS = "0";
+        process.env.PROXY_CONNECT_TIMEOUT_MS = "invalid";
+        process.env.PROXY_HEALTHCHECK_INTERVAL_MS = "-1";
+        process.env.PROXY_REST_KEEPALIVE_INTERVAL_MS = "0";
+        process.env.PROXY_RETRY_DELAY_MS = "invalid";
+        process.env.PROXY_RETRY_FACTOR = "-2";
+        process.env.PROXY_RETRY_MAX_DELAY_MS = "0";
 
-    const config = loadProxyConfig();
+        const config = loadProxyConfig();
 
-    expect(config.connectTimeoutMs).toBe(10000);
-    expect(config.healthCheckIntervalMs).toBe(60000);
-    expect(config.restKeepAliveIntervalMs).toBe(240000);
-    expect(config.retry.delay).toBe(5000);
-    expect(config.retry.factor).toBe(2);
-    expect(config.retry.maxDelay).toBe(60000);
-});
+        expect(config.connectTimeoutMs).toBe(10000);
+        expect(config.healthCheckIntervalMs).toBe(60000);
+        expect(config.restKeepAliveIntervalMs).toBe(240000);
+        expect(config.retry.delay).toBe(5000);
+        expect(config.retry.factor).toBe(2);
+        expect(config.retry.maxDelay).toBe(60000);
+    });
 
-it("should accept valid numeric environment values", () => {
-    process.env.PROXY_ENABLED = "true";
-    process.env.PROXY_TYPE = "http";
-    process.env.PROXY_URL = "http://127.0.0.1:8080";
+    it("should accept valid numeric environment values", () => {
+        process.env.PROXY_ENABLED = "true";
+        process.env.PROXY_TYPE = "http";
+        process.env.PROXY_URL = "http://127.0.0.1:8080";
 
-    process.env.PROXY_CONNECT_TIMEOUT_MS = "5000";
-    process.env.PROXY_HEALTHCHECK_INTERVAL_MS = "30000";
-    process.env.PROXY_REST_KEEPALIVE_INTERVAL_MS = "120000";
-    process.env.PROXY_RETRY_DELAY_MS = "1000";
-    process.env.PROXY_RETRY_FACTOR = "3";
-    process.env.PROXY_RETRY_MAX_DELAY_MS = "90000";
+        process.env.PROXY_CONNECT_TIMEOUT_MS = "5000";
+        process.env.PROXY_HEALTHCHECK_INTERVAL_MS = "30000";
+        process.env.PROXY_REST_KEEPALIVE_INTERVAL_MS = "120000";
+        process.env.PROXY_RETRY_DELAY_MS = "1000";
+        process.env.PROXY_RETRY_FACTOR = "3";
+        process.env.PROXY_RETRY_MAX_DELAY_MS = "90000";
 
-    const config = loadProxyConfig();
+        const config = loadProxyConfig();
 
-    expect(config.connectTimeoutMs).toBe(5000);
-    expect(config.healthCheckIntervalMs).toBe(30000);
-    expect(config.restKeepAliveIntervalMs).toBe(120000);
-    expect(config.retry.delay).toBe(1000);
-    expect(config.retry.factor).toBe(3);
-    expect(config.retry.maxDelay).toBe(90000);
+        expect(config.connectTimeoutMs).toBe(5000);
+        expect(config.healthCheckIntervalMs).toBe(30000);
+        expect(config.restKeepAliveIntervalMs).toBe(120000);
+        expect(config.retry.delay).toBe(1000);
+        expect(config.retry.factor).toBe(3);
+        expect(config.retry.maxDelay).toBe(90000);
+    });
 });
 
 describe("ProxyAgentFactory", () => {
-    it("should not produce core agents for an http proxy (uses global-agent instead)", () => {
+    it("should not produce core agents for an http proxy", () => {
         const agents = ProxyAgentFactory.create({
             enabled: true,
             type: "http",
@@ -173,5 +181,20 @@ describe("ProxyAgentFactory", () => {
         expect(agents.coreAgents).toBeDefined();
         expect(agents.coreAgents?.httpAgent).toBeDefined();
         expect(agents.coreAgents?.httpsAgent).toBeDefined();
+    });
+
+    it("should accept SOCKS5 proxy credentials in the proxy URL", () => {
+        const agents = ProxyAgentFactory.create({
+            enabled: true,
+            type: "socks5",
+            url: "socks5://testuser:testpass@127.0.0.1:1080",
+            connectTimeoutMs: 1000,
+            healthCheckIntervalMs: 1000,
+            restKeepAliveIntervalMs: 240000,
+            retry: { delay: 100, factor: 2, maxDelay: 1000 },
+        });
+
+        expect(agents.dispatcher).toBeDefined();
+        expect(agents.coreAgents).toBeDefined();
     });
 });

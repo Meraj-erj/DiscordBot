@@ -6,6 +6,7 @@ import { Agent, ProxyAgent, type Dispatcher } from "undici";
 import { SocksProxyAgent } from "socks-proxy-agent";
 import { SocksClient } from "socks";
 
+import logger from "../logger/logger.js";
 import { ProxyError } from "../errors/index.js";
 
 import type { ProxyConfig } from "./ProxyConfig.js";
@@ -31,15 +32,27 @@ export interface ProxyAgents {
 interface SocksTarget {
     host: string;
     port: number;
+    userId?: string;
+    password?: string;
 }
 
 function parseSocksTarget(url: string): SocksTarget {
     const parsed = new URL(url);
 
-    return {
+    const target: SocksTarget = {
         host: parsed.hostname,
         port: Number(parsed.port || "1080"),
     };
+
+    if (parsed.username) {
+        target.userId = decodeURIComponent(parsed.username);
+    }
+
+    if (parsed.password) {
+        target.password = decodeURIComponent(parsed.password);
+    }
+
+    return target;
 }
 
 /**
@@ -54,33 +67,59 @@ function createSocksDispatcher(config: ProxyConfig): Dispatcher {
 
     return new Agent({
         connect: (options, callback) => {
-            const destination = options as unknown as {
-                hostname: string;
-                port: number;
+            const rawDestination = options as unknown as {
+                hostname?: string;
+                host?: string;
+                port: number | string;
                 protocol?: string;
             };
+
+            const destinationHost = rawDestination.hostname ?? rawDestination.host;
+
+            const destinationPort = Number(
+                rawDestination.port || (rawDestination.protocol === "https:" ? 443 : 80)
+            );
+
+            if (!destinationHost || !Number.isFinite(destinationPort) || destinationPort <= 0) {
+                logger.error(
+                    "Proxy",
+                    `SOCKS5 connector received an invalid destination: ${JSON.stringify(
+                        rawDestination
+                    )}`
+                );
+
+                callback(
+                    new Error("SOCKS5 connector received an invalid destination host/port."),
+                    null
+                );
+
+                return;
+            }
 
             SocksClient.createConnection({
                 proxy: {
                     host: proxy.host,
                     port: proxy.port,
                     type: 5,
+                    ...(proxy.userId !== undefined ? { userId: proxy.userId } : {}),
+                    ...(proxy.password !== undefined ? { password: proxy.password } : {}),
                 },
                 command: "connect",
                 destination: {
-                    host: destination.hostname,
-                    port: destination.port,
+                    host: destinationHost,
+                    port: destinationPort,
                 },
                 timeout: config.connectTimeoutMs,
             })
                 .then(({ socket }) => {
-                    if (destination.protocol === "https:") {
+                    if (rawDestination.protocol === "https:") {
                         const tlsSocket = tls.connect({
                             socket,
-                            servername: destination.hostname,
+                            servername: destinationHost,
                         });
 
                         tlsSocket.once("secureConnect", () => callback(null, tlsSocket));
+
                         tlsSocket.once("error", (error) => callback(error, null));
 
                         return;
@@ -89,6 +128,13 @@ function createSocksDispatcher(config: ProxyConfig): Dispatcher {
                     callback(null, socket);
                 })
                 .catch((error: unknown) => {
+                    logger.error(
+                        "Proxy",
+                        `SOCKS5 connection to ${destinationHost}:${destinationPort} failed: ${
+                            error instanceof Error ? error.message : String(error)
+                        }`
+                    );
+
                     callback(error instanceof Error ? error : new Error(String(error)), null);
                 });
         },
