@@ -63,7 +63,6 @@ export class ProxyManager {
                 setGlobalDispatcher(agents.dispatcher);
 
                 if (agents.coreAgents) {
-                    // SOCKS5 path: best-effort core agent override for the Gateway.
                     this.originalHttpAgent = http.globalAgent;
                     this.originalHttpsAgent = https.globalAgent;
 
@@ -78,8 +77,6 @@ export class ProxyManager {
                             "through a local HTTP bridge in front of the SOCKS5 proxy."
                     );
                 } else {
-                    // HTTP/HTTPS path: verified approach recommended by the official
-                    // discord.js proxy guide for the Gateway handshake.
                     this.globalAgentBootstrapper.install(this.config);
                 }
 
@@ -110,13 +107,6 @@ export class ProxyManager {
         if (this.originalHttpsAgent) {
             https.globalAgent = this.originalHttpsAgent;
         }
-
-        // Note: if the HTTP/HTTPS path was used, `global-agent`'s patch to
-        // `http.request` / `https.request` has no official uninstall and remains
-        // active for the remaining lifetime of the process. This only matters for
-        // processes that disable the proxy and expect direct connectivity afterward
-        // without restarting — which this application does not currently do, since
-        // proxy configuration is read once at startup.
     }
 
     private startHealthCheck(): void {
@@ -151,7 +141,9 @@ export class ProxyManager {
     private async checkProxyReachable(): Promise<void> {
         const target = new URL(this.config.url);
 
-        const port = Number(target.port || (this.config.type === "http" ? 80 : 443));
+        const defaultPort =
+            this.config.type === "socks5" ? 1080 : this.config.type === "http" ? 80 : 443;
+        const port = Number(target.port || defaultPort);
 
         await new Promise<void>((resolve, reject) => {
             const socket = net.createConnection(

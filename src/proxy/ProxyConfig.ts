@@ -45,8 +45,10 @@ export function validateProxyConfig(config: ProxyConfig): void {
         throw new ProxyError("PROXY_URL is required when PROXY_ENABLED is true.");
     }
 
+    let parsed: URL;
+
     try {
-        new URL(config.url);
+        parsed = new URL(config.url);
     } catch (error) {
         throw new ProxyError(
             `PROXY_URL is not a valid URL: ${config.url}`,
@@ -55,6 +57,18 @@ export function validateProxyConfig(config: ProxyConfig): void {
             "Provide a URL such as http://user:pass@host:port or socks5://host:port",
             error instanceof Error ? error : undefined
         );
+    }
+
+    const expectedProtocol = `${config.type}:`;
+
+    if (parsed.protocol !== expectedProtocol) {
+        throw new ProxyError(
+            `PROXY_URL protocol '${parsed.protocol}' does not match PROXY_TYPE '${config.type}'.`
+        );
+    }
+
+    if (!parsed.hostname) {
+        throw new ProxyError("PROXY_URL must include a proxy hostname.");
     }
 }
 
